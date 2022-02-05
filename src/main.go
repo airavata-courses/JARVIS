@@ -159,7 +159,7 @@ func main(){
     r.HandleFunc("/api/getweather", getWeather).Methods("POST")
 
     // Start web server
-    log.Fatal(http.ListenAndServe(":8000", r))
+    log.Fatal(http.ListenAndServe(":80", r))
 
 }
 
