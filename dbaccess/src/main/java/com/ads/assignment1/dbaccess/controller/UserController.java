@@ -57,14 +57,12 @@ public class UserController {
     
 	@GetMapping("getUserSearchHistory")
 	public List<String> getUserHistory(@RequestBody User objUser ){
-		
 		return service.getUserHistory(objUser.getUser_unique_id());
     }
 	
 	@GetMapping("getUserSearchHistory1")
 	public List<UserSearchHistory> getUserHistory1(){
-		
-		return service.getUserHistory1("NILESH");
+		return service.getUserHistory1("Snehal");
     }
 	
 }

@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  api_service:
+    build: .
+    restart: always
+    ports:
+      - 8088:8080
+    depends_on:
+      - postgres_db
+  postgres_db:
+    image: "postgres:11.4"
+    restart: always
+    environment:
+      POSTGRES_DB: userhistory
+      POSTGRES_PASSWORD: password
