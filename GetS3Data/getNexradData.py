@@ -4,9 +4,16 @@ from datetime import datetime, timedelta
 from timeit import default_timer
 
 import numpy as np
-from flask import Flask, request, json
+from flask import Flask, request, json, send_file, jsonify
 from flask_restful import Api, Resource, reqparse
 from siphon.radarserver import RadarServer
+
+import metpy.plots as mpplots
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+
+ref_norm, ref_cmap = mpplots.ctables.registry.get_with_steps('NWSReflectivity', 5, 5)
 
 app = Flask(__name__)
 api = Api(app)
@@ -14,8 +21,11 @@ api = Api(app)
 
 class NexradData(Resource):
     def post(self):
-        data = json.loads(request.data)
-        x = get_for_single_timestamp(data['station'], data['date'], data['time'])
+        if len(request.data) == 0:
+            data = json.loads(request.form['body'])
+        else:
+            data = json.loads(request.data)
+        x = get_for_single_timestamp(data['station'], data['date_time'])
         return x
 
 
@@ -39,15 +49,16 @@ def polar_to_cartesian(az, rng):
     return x, y
 
 
-def get_for_single_timestamp(station, date, time):
+def get_for_single_timestamp(station, date_time):
     start1 = default_timer()
     rs = RadarServer('http://tds-nexrad.scigw.unidata.ucar.edu/thredds/radarServer/nexrad/level2/S3/')
 
     query = rs.query()
+    date, time = date_time.split('T')
     d = date.split('-')
     t = time.split(':')
-    date_time = datetime(int(d[0]), int(d[1]), int(d[2]), int(t[0]), int(t[1]), int(t[2]))
-    query.stations(station).time(date_time)
+    date__time = datetime(int(d[0]), int(d[1]), int(d[2]), int(t[0]), int(t[1]), 30)
+    query.stations(station).time(date__time)
 
     d = {}
 
@@ -69,69 +80,37 @@ def get_for_single_timestamp(station, date, time):
         ref = raw_to_masked_float(ref_var, ref_data)
         d['ref_val'] = ref.tolist()
         x, y = polar_to_cartesian(az, rng)
-        d['ref_x'] = x.tolist()
-        d['ref_y'] = y.tolist()
 
-        rad_vel_var = data.variables['RadialVelocity_HI']
-        rad_vel_data = rad_vel_var[sweep]
-        rng = data.variables['distanceV_HI'][:]
-        az = data.variables['azimuthV_HI'][sweep]
+        fig = plt.figure(figsize=(10, 10))
+        ax = new_map(fig, data.StationLongitude, data.StationLatitude)
+        ax.pcolormesh(x, y, ref, cmap=ref_cmap, norm=ref_norm, zorder=0)
 
-        rad_vel = raw_to_masked_float(rad_vel_var, rad_vel_data)
-        #d['rad_vel_val'] = rad_vel.tolist()
-        x, y = polar_to_cartesian(az, rng)
-        #d['rad_vel_x'] = x.tolist()
-        #d['rad_vel_y'] = y.tolist()
+        s = station + '_' + date_time
 
-        spec_wid_var = data.variables['SpectrumWidth_HI']
-        spec_wid_data = spec_wid_var[sweep]
-        rng = data.variables['distanceD_HI'][:]
-        az = data.variables['azimuthD_HI'][sweep]
-
-        spec_wid = raw_to_masked_float(spec_wid_var, spec_wid_data)
-        #d['spec_wid_val'] = spec_wid.tolist()
-        x, y = polar_to_cartesian(az, rng)
-        #d['spec_wid_x'] = x.tolist()
-        #d['spec_wid_y'] = y.tolist()
-
-
-        return json.dumps(d)
-
+        fig.savefig("/opt/"+s)
+        return jsonify({"img_url": "/opt/"+s})
 
     else:
         return "No data found for given time stamp"
 
 
-def get_for_single_timestamp_range(station, date_time):
-    rs = RadarServer('http://tds-nexrad.scigw.unidata.ucar.edu/thredds/radarServer/nexrad/level2/S3/')
-    query = rs.query()
-    dt = datetime(2012, 10, 29, 15)
-    query.lonlat_point(-73.687, 41.175).time_range(dt, dt + timedelta(hours=1))
+def new_map(fig, lon, lat):
+    # Create projection centered on the radar. This allows us to use x
+    # and y relative to the radar.
+    proj = ccrs.LambertConformal(central_longitude=lon, central_latitude=lat)
 
-    cat = rs.get_catalog(query)
+    # New axes with the specified projection
+    ax = fig.add_axes([0.02, 0.02, 0.96, 0.96], projection=proj)
 
-    l = []
+    # Add coastlines and states
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=2)
+    ax.add_feature(cfeature.STATES.with_scale('50m'))
 
-    for ds_name in cat.datasets:
-        # After looping over the list of sorted datasets, pull the actual Dataset object out
-        # of our list of items and access over CDMRemote
-        data = cat.datasets[ds_name].remote_access()
-
-        # Pull out the data of interest
-        sweep = 0
-        rng = data.variables['distanceR_HI'][:]
-        az = data.variables['azimuthR_HI'][sweep]
-        ref_var = data.variables['Reflectivity_HI']
-
-        # Convert data to float and coordinates to Cartesian
-        ref = raw_to_masked_float(ref_var, ref_var[sweep])
-        x, y = polar_to_cartesian(az, rng)
-
-        l.append((ref, x, y))
-    return l
+    return ax
 
 
 api.add_resource(NexradData, '/api/nexraddata')
 
 if __name__ == '__main__':
-    app.run(port='5002')
+    app.run(host="0.0.0.0", port="80")
+
