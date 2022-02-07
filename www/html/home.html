@@ -7,8 +7,9 @@
         </head>
         <body>
             <section class="search-form">
-                <p class="submit-wrap">
-                    <button class="grid-100 btn">History</button>
+                <p>
+                    <button class="grid-100 btn" id="history" onclick="history()">History</button>
+                    <button class="grid-100 btn" id="logout" onclick="logout()">Logout</button>
                 </p>
 
 
@@ -77,5 +78,11 @@
                                                        data: JSON.stringify(data_my)
                                                    });
                            }
+                    function logout(){
+                        location.href = "index.html";
+                    }
+                    function history(){
+                        location.href = "history.html";
+                    }
                 </script>
     </html>
