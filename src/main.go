@@ -10,7 +10,7 @@ import(
 )
 
 var authserv string = "https://12877c5d-aa48-4583-b999-321b06efc7ca.mock.pstmn.io"+"/api/check_token"
-var s3serv string = "https://85ea393e-9e9a-4552-9894-c00f5c53b238.mock.pstmn.io"+"/api/getweather"
+var s3serv string = "http://s3get_server"+"/api/nexraddata"
 var dbserv string = "https://ea377b7e-7938-451f-bd1f-fbbbb513ab65.mock.pstmn.io"+"/api/adduserhistory"
 
 
@@ -83,8 +83,8 @@ func recordUserAction(wreq WeatherReq, uid string, imgurl string) {
 }
 
 type WeatherReq struct {
-    Datetime string `json:"datetime"`
-    Location string `json:"loction"`
+    Datetime string `json:"date_time"`
+    Location string `json:"station"`
     Session_id string `json:"session_id"`
 }
 
