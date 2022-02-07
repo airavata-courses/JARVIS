@@ -10,7 +10,7 @@ CREATE TABLE myapp.user_master (
     user_unique_id character varying(1000) NOT NULL,
     status integer NOT NULL,
     modified_by integer,
-    modified_at timestamp without time zone
+    modified_at text 
 );
 
 
@@ -30,23 +30,21 @@ CREATE TABLE myapp.history_master (
     status integer NOT NULL,
     created_by integer,
 	searched_time text,
-    created_at timestamp without time zone,
+    location_searched_at text,
 	FOREIGN KEY(user_id) REFERENCES myapp.user_master(user_id),
 	FOREIGN KEY(place_id) REFERENCES myapp.place_master(place_id)
 );
 
-INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'MN', 100, 200,1 );
-
-INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'Boomington', 100, 200,1 );
-
-INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'Shakopee', 100, 200,1 );
 
 /*
+INSERT INTO myapp.user_master (user_unique_id,status,modified_by, modified_at) values ( 'NILESH', 1 , 100, 'TimeA'
+--(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE)
+);
 
-INSERT INTO myapp.user_master (user_unique_id,status,modified_by, modified_at) values ( 'NILESH', 1 , 100, (SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE));
-
-INSERT INTO myapp.user_master (user_unique_id,status,modified_by, modified_at) values ( 'Snehal', 1 , 100, (SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE));
-
+INSERT INTO myapp.user_master (user_unique_id,status,modified_by, modified_at) values ( 'Snehal', 1 , 100, 'TimeB'
+--(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE)
+);
+*/
 INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'MN', 100, 200,1 );
 
 INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'Boomington', 100, 200,1 );
@@ -56,18 +54,24 @@ INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'Shakop
 
 --DROP TABLE myapp.history_master;
 
-
+/*
 INSERT INTO myapp.history_master ( user_id,place_id, data_link, status, created_by , searched_time, created_at )
-values ( 1 , 2, 'C:temp', 1,100, 'Adata', (SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE) );
+values ( 1 , 2, 'C:temp', 1,100, 'Adata', 'TimeD'
+--(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE) 
+);
 
 INSERT INTO myapp.history_master ( user_id,place_id, data_link, status, created_by , searched_time , created_at )
-values ( 1 , 1, 'C:temp', 1, 200, 'Adata', (SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE) );
+values ( 1 , 1, 'C:temp', 1, 200, 'Adata', 'TimeC'
+--(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE) 
+);
 
 
 INSERT INTO myapp.history_master ( user_id,place_id, data_link, status, created_by , searched_time, created_at )
-values ( 2 , 1, 'C:temp', 1, 300, 'Adata', (SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE) );
-
+values ( 2 , 1, 'C:temp', 1, 300, 'Adata', 'TimeD'
+--(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE) 
+);
 */
+
 
 select * from myapp.user_master;
 select * from myapp.place_master;
@@ -83,7 +87,7 @@ returns table(
     status integer,
     created_by integer,
 	searched_time text,
-    created_at timestamp without time zone
+    location_searched_at text -- timestamp without time zone
 	) as
 $$
    
@@ -97,7 +101,7 @@ returns table(
 	place_name text,
 	data_link text,
 	searched_time text,
-	searched_at timestamp without time zone
+	location_searched_at text -- timestamp without time zone
 	) as
 $$
    
@@ -105,17 +109,17 @@ $$
 		p.place_name,
 		h.data_link , 
 		h.searched_time,
-		h.created_at 
+		h.location_searched_at 
 	from myapp.history_master h 
 	JOIN myapp.user_master u 
 	on h.user_id = u.user_id 
 	JOIN myapp.place_master p 
 	on p.place_id = h.place_id
-	where u.user_unique_id = unique_id order by h.created_at ;
+	where u.user_unique_id = unique_id;
    
 $$ language sql;
 
-CREATE OR REPLACE FUNCTION myapp.InsertUser ( userUniqueId text)
+CREATE OR REPLACE FUNCTION myapp.InsertUser ( userUniqueId text, userCreatedAt text)
 returns  boolean as
 $$
 	DECLARE	
@@ -136,7 +140,8 @@ $$
 			userUniqueId, 
 			1, 
 			100, 
-			(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE)
+			userCreatedAt
+			--(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE)
 		);
 		return true;
 	END;
@@ -144,7 +149,7 @@ $$ language plpgsql;
 
 
 
-CREATE OR REPLACE FUNCTION myapp.InsertUserSearchRecord ( userUniqueId text, placeName text, dataLink text, searchedTime text)
+CREATE OR REPLACE FUNCTION myapp.InsertUserSearchRecord ( userUniqueId text, placeName text, dataLink text, searchedTime text, locationSearchedAt text)
 returns  boolean as
 $$
 	DECLARE	
@@ -161,15 +166,16 @@ $$
 		INSERT INTO myapp.history_master 
 		( 
 			user_id,place_id, data_link, status, 
-			created_by , searched_time, created_at
-		) VALUES 
-		((SELECT U.user_id from myapp.user_master U where U.user_unique_id = userUniqueId),
+			created_by , searched_time, location_searched_at
+		)
+		VALUES
+		(
+		(SELECT  U1.user_id from myapp.user_master U1 where U1.user_unique_id = userUniqueId),
 		( SELECT P.place_id from myapp.place_master P where P.place_name = placeName ),
 		dataLink, 1,
 		100, searchedTime, 
-		(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE)); 
-		
-		
+		locationSearchedAt
+		);
 		return true;
 	END;
 $$ language plpgsql;

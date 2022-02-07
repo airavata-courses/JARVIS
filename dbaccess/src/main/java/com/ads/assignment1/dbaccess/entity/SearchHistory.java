@@ -30,7 +30,7 @@ import javax.persistence.ParameterMode;
             @ColumnResult(name = "place_name", type = String.class),
             @ColumnResult(name ="data_link", type = String.class),
             @ColumnResult(name ="searched_time", type = String.class),
-            @ColumnResult(name ="created_at", type = Timestamp.class)
+            @ColumnResult(name ="location_searched_at", type = String.class)
         }
         )
     }
@@ -73,8 +73,8 @@ public class SearchHistory {
 	@Column (name = "searched_time")
 	private String searched_time;
 	
-	@Column (name = "created_at")
-	private Timestamp created_at;
+	@Column (name = "location_searched_at")
+	private String location_searched_at;
 
 	
 	public long getHistory_id() {
@@ -125,11 +125,11 @@ public class SearchHistory {
 		this.created_by = created_by;
 	}
 
-	public Timestamp getCreated_at() {
-		return created_at;
+	public String getlocation_searched_at() {
+		return location_searched_at;
 	}
 
-	public void setCreated_at(Timestamp created_at) {
-		this.created_at = created_at;
+	public void setLocation_searched_at(String location_searched_at) {
+		this.location_searched_at = location_searched_at;
 	}
 }

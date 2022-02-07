@@ -1,19 +1,19 @@
 package com.ads.assignment1.dbaccess.Pojos;
 
-import java.sql.Timestamp;
-
 public class UserInsertSearchRecord {
 
 	private String place_name;
 	private String data_link;
 	private String searched_time;
 	private String user_unique_id;
+	private String location_searched_at;
 	
-	public UserInsertSearchRecord(String place_name, String data_link, String searched_time, String user_unique_id) {
+	public UserInsertSearchRecord(String place_name, String data_link, String searched_time, String user_unique_id, String location_searched_at) {
 		this.place_name = place_name;
 		this.data_link = data_link;
 		this.searched_time = searched_time;
 		this.user_unique_id = user_unique_id;
+		this.location_searched_at=location_searched_at;
 	}
 
 	public String getPlace_name() {
@@ -39,6 +39,14 @@ public class UserInsertSearchRecord {
 	public void setSearched_time(String searched_time) {
 		this.searched_time = searched_time;
 	}
+	
+	public String getLocation_searched_at() {
+		return location_searched_at;
+	}
+
+	public void setLocation_searched_at(String location_searched_at) {
+		this.location_searched_at = location_searched_at;
+	}
 
 	public String getUser_unique_id() {
 		return user_unique_id;
@@ -47,5 +55,4 @@ public class UserInsertSearchRecord {
 	public void setUser_unique_id(String user_unique_id) {
 		this.user_unique_id = user_unique_id;
 	}
-
 }

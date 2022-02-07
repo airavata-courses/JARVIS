@@ -2,7 +2,7 @@ package com.ads.assignment1.dbaccess.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.ads.assignment1.dbaccess.Pojos.UserInsertSearchRecord;
@@ -11,10 +11,8 @@ import com.ads.assignment1.dbaccess.entity.Place;
 import com.ads.assignment1.dbaccess.entity.SearchHistory;
 import com.ads.assignment1.dbaccess.entity.User;
 import com.ads.assignment1.dbaccess.service.UserService;
-
-import java.sql.Timestamp;
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class UserController {
 
@@ -31,9 +29,8 @@ public class UserController {
     
     @PostMapping("addUser")
     public boolean InsertUserDetails(@RequestBody User objUser ){
-        return service.InsertUserDetails(objUser.getUser_unique_id());
+        return service.InsertUserDetails(objUser.getUser_unique_id(), objUser.getModified_at());
     }
-    
     
     @GetMapping("/getAllUsers")
     public List<User> findAllUsers() {
@@ -52,17 +49,21 @@ public class UserController {
 	
     @PostMapping("addUserSearchRecord")
     public boolean InsertUserDetails(@RequestBody UserInsertSearchRecord obj ){
-        return service.InsertUserSearchRecord(obj);
+    	return service.InsertUserSearchRecord(obj);
     }
-    
+    /*
+     * Back up procedure
+     
 	@GetMapping("getUserSearchHistory")
 	public List<String> getUserHistory(@RequestBody User objUser ){
+		
 		return service.getUserHistory(objUser.getUser_unique_id());
     }
-	
-	@GetMapping("getUserSearchHistory1")
-	public List<UserSearchHistory> getUserHistory1(){
-		return service.getUserHistory1("Snehal");
+	*/
+    
+	@GetMapping("getUserSearchHistory/{id}")
+	public List<UserSearchHistory> getUserHistory(@PathVariable ( value = "id") String id ){
+		return service.getUserSearchHistory(id);
     }
 	
 }

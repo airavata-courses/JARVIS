@@ -41,8 +41,8 @@ public class UserService {
         return userRepository.save(objUser);
     }
     
-    public boolean InsertUserDetails(String userUniqueId ){
-        return userRepository.InsertUserDetails(userUniqueId);
+    public boolean InsertUserDetails(String userUniqueId, String userCreatedAt ){
+        return userRepository.InsertUserDetails(userUniqueId, userCreatedAt);
     }
     
     public List<User> getUsers() {
@@ -55,7 +55,7 @@ public class UserService {
     
     public boolean InsertUserSearchRecord(UserInsertSearchRecord obj ){
         return historyRepository.InsertUserSearchRecord(obj.getUser_unique_id(), obj.getPlace_name(),
-        		obj.getData_link(),obj.getSearched_time());
+        		obj.getData_link(),obj.getSearched_time(), obj.getLocation_searched_at());
     }
     
 	@Transactional(readOnly = true)
@@ -70,7 +70,7 @@ public class UserService {
     }
 	
 	@Transactional(readOnly = true)
-	public List<UserSearchHistory> getUserHistory1(String userUniqueId){
+	public List<UserSearchHistory> getUserSearchHistory(String userUniqueId){
 		
         StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("myapp.GetUserSearchHistory");
         spq.setParameter("unique_id", userUniqueId);

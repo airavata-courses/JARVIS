@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 	@NamedStoredProcedureQuery(name = "myapp.InsertUser", procedureName = "myapp.InsertUser",
 			parameters = {
 			    @StoredProcedureParameter(mode = ParameterMode.IN, name="userUniqueId", type = String.class),
+			    @StoredProcedureParameter(mode = ParameterMode.IN, name="userCreatedAt", type = String.class),
 			    @StoredProcedureParameter(mode = ParameterMode.OUT, name="insertuser", type = boolean.class)
 			})
 })
@@ -38,7 +39,7 @@ public class User {
     private String user_unique_id;
     private Integer status;
 	private Integer modified_by;
-    private Timestamp modified_at;
+    private String modified_at;
     
     
     public int getUser_id() {
@@ -66,10 +67,10 @@ public class User {
 		this.modified_by = modified_by;
 	}
 
-	public Timestamp getModified_at() {
+	public String getModified_at() {
 		return modified_at;
 	}
-	public void setModified_at(Timestamp modified_at) {
+	public void setModified_at(String modified_at) {
 		this.modified_at = modified_at;
 	}
 }
