@@ -53,6 +53,7 @@
                 
                 <!-- </form> -->
                 <p><img id="if1" src="/assets/img/test.png" alt="HTML5 Icon" width="1020" height="600"></p>
+                <div class="loading" id ="loading">Loading&#8230;</div>
             </body>
                 <script>
                     function sendRequest(){
@@ -60,6 +61,8 @@
                                const station = document.getElementById( "station" ).value;
                                const date_time = document.getElementById( "datetime-field" ).value;
                                const data_my = {station:station,date_time:date_time,session_id:"abcd"};
+                        
+                               document.getElementById("loading").style.display = "block";
 
                                $.ajax({
                                                        url: url,
@@ -68,6 +71,8 @@
                                                        contentType: 'application/json',
                                                        success: function (data) {
                                                                                console.log(data);
+                                                                               document.getElementById("myImageId").src="/assets/img/"+data.img_url;
+                                                                               document.getElementById("loading").style.display = "none";
                                                                            },
                                                        data: JSON.stringify(data_my)
                                                    });
