@@ -60,6 +60,7 @@
   }
   
   .search-wrap {
+    display: inline-flex;
     width: 50%;
   }
   
@@ -136,6 +137,7 @@
   /* select menu styles */
   
   .cat-wrap {
+    display: inline-flex;
     padding: 0;
     position: relative;
     z-index: 1;
@@ -387,4 +389,11 @@
 
 #loading{
   display: none;
+}
+
+#search{
+  display:inline-flex;
+  margin-left: 300px;
+  margin-bottom: 10px;
+  width: 60%;
 }
