@@ -2,7 +2,7 @@
     <html>
         <head>
             <title>Weather Forecast</title>
-            <link href="D:\Map.css" rel="stylesheet" type="text/css">
+            <link href="Home.css" rel="stylesheet" type="text/css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
         <body>
@@ -52,26 +52,25 @@
 
                 
                 <!-- </form> -->
-                <p><img id="if1" src="D:/test/test.png" alt="HTML5 Icon" width="1020" height="600"></p>
+                <p><img id="if1" src="/assets/img/test.png" alt="HTML5 Icon" width="1020" height="600"></p>
             </body>
                 <script>
                     function sendRequest(){
-                        const url = "http://127.0.0.1:8000/api/getweather";
-                        const station = document.getElementById( "station" ).value;
-                        const date_time = document.getElementById( "datetime-field" ).value;
-                        const data = {"station":station,"date_time":date_time};
+                               const url = "/api/s3g/getweather";
+                               const station = document.getElementById( "station" ).value;
+                               const date_time = document.getElementById( "datetime-field" ).value;
+                               const data_my = {station:station,date_time:date_time,session_id:"abcd"};
 
-                        // var posting = $.post(url,data,function(data, status){
-                        //     console.log(status);
-                        //     console.log(data);
-                        // }, "json");
-
-                        $.post(url,
-                        {"station":station,"date_time":date_time},
-                            function (data){
-                            console.log(data);
-                            },
-                            "json");
-                    }
+                               $.ajax({
+                                                       url: url,
+                                                       type: 'post',
+                                                       dataType: 'json',
+                                                       contentType: 'application/json',
+                                                       success: function (data) {
+                                                                               console.log(data);
+                                                                           },
+                                                       data: JSON.stringify(data_my)
+                                                   });
+                           }
                 </script>
     </html>
