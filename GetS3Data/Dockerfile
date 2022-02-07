@@ -9,4 +9,4 @@ RUN conda install -c conda-forge metpy
 RUN conda install -c conda-forge siphon
 COPY ./getNexradData.py ./
 
-CMD ["python", "getNexradData.py", ">", "/tmp/log"]
+CMD ["python", "getNexradData.py"]
