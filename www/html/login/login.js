@@ -157,14 +157,14 @@ $(function() {
 
     // My custom functions that doesn't concern UI
     //
-    let api_prefix = "/api"
+    let api_prefix = "/api/as"
 
     $("#login-btn").click(function() {
         let uname = $("#name").val();
         let pass = $("#pass").val();
         setCookie("user", uname);
 
-        $.post(domain + api_prefix + "/login",
+        $.post(api_prefix + "/login",
             {"user" : uname,
             "pass": pass},
             function (data){
@@ -183,7 +183,7 @@ $(function() {
         let pass = $("#regpass").val();
         setCookie("user", uname);
 
-        $.post(domain + api_prefix + "/signup",
+        $.post(api_prefix + "/signup",
             {"user" : uname,
              "pass": pass},
             function (data){
