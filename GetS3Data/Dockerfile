@@ -1,8 +1,8 @@
-FROM continuumio/anaconda3
+FROM continuumio/miniconda3
 
 RUN apt update
 
-RUN conda install -c miniconda flask
+RUN conda install -c anaconda flask
 RUN conda install -c conda-forge flask-restful
 RUN conda install -c conda-forge numpy
 RUN conda install -c conda-forge siphon
