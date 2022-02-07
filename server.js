@@ -63,6 +63,9 @@ try{
     const collection = db.collection('USER_DATA_MASTER')
     var opx = await collection.findOne({"EMAIL_ID" : c1.EMAIL_ID})
     console.log("opx : ",opx)
+    if(opx == null){
+        res.json({"STATUS": "ERROR","MESSAGE": "USER NOT FOUND"})
+    }
     console.log("opx.PASSWORD : ",opx.PASSWORD)
     var b = crypto.AES.decrypt(opx.PASSWORD,key);
     console.log("b : ",b);
