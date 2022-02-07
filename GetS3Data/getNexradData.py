@@ -21,10 +21,12 @@ api = Api(app)
 
 class NexradData(Resource):
     def post(self):
+        print(request.data)
         if len(request.data) == 0:
             data = json.loads(request.form['body'])
         else:
             data = json.loads(request.data)
+        print(data)
         x = get_for_single_timestamp(data['station'], data['date_time'])
         return x
 
@@ -87,11 +89,11 @@ def get_for_single_timestamp(station, date_time):
 
         s = station + '_' + date_time
 
-        fig.savefig("/opt/"+s)
-        return jsonify({"img_url": "/opt/"+s})
+        fig.savefig("/opt/img/"+s)
+        return jsonify({"img_url": s})
 
     else:
-        return "No data found for given time stamp"
+        return jsonify({"err":"No data found for given time stamp"})
 
 
 def new_map(fig, lon, lat):
