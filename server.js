@@ -80,7 +80,11 @@ try{
         console.log("new_vals : ",new_vals)
         var sess = await collection.updateOne(myquery,new_vals)
         console.log("sess : ",sess)
-        op_res = {"session_id" : token,"USER_UNIQUE_ID" : opx._id}
+        var auth_decoded = jwt.verify(token,key);
+        console.log("AUTH_DECODED : ",auth_decoded);
+        uid = auth_decoded.UNIQUE_USER_ID;
+        console.log("uid : ",uid);
+        op_res = {"session_id" : token,"USER_UNIQUE_ID" : uid}
         console.log("op_res : ",op_res)
         res.json(op_res)
     }else{
@@ -161,7 +165,11 @@ app.post('/login_auth/signup', jsonParser, async function(req,res){
               .catch(error => {
                 console.error(error)
               })
-            op_res = {"session_id" : token,"USER_UNIQUE_ID": opx._id}
+              var auth_decoded = jwt.verify(token,key);
+              console.log("AUTH_DECODED : ",auth_decoded);
+              uid = auth_decoded.UNIQUE_USER_ID;
+              console.log("uid : ",uid);
+            op_res = {"session_id" : token,"USER_UNIQUE_ID": uid}
             console.log("op_res : ",op_res)
             res.json(op_res)
         }else{
