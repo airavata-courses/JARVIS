@@ -9,7 +9,7 @@ import(
     "github.com/gorilla/mux"
 )
 
-var authserv string = "https://12877c5d-aa48-4583-b999-321b06efc7ca.mock.pstmn.io"+"/api/check_token"
+var authserv string = "http://auth_server"+"/login_auth/verify_token"
 var s3serv string = "http://s3get_server"+"/api/nexraddata"
 var dbserv string = "http://dbapp"+"/addUserSearchRecord"
 
@@ -19,7 +19,16 @@ type AuthservReq struct{
 }
 
 type AuthservResp struct{
-    UserId string `json:"user_id"`
+    Status string `json:"STATUS"`
+    DD *DecodedData `json:"DECODED_DATA"`
+}
+
+type DecodedData struct{
+    Email string `json:"EMAIL_ID"`
+    UID string `json:"UNIQUE_USER_ID"`
+    LogDt string `json:"LOGIN_DATETIME"`
+    iat int64 `json:"iat"`
+    exp int64 `json:"exp"`
 }
 
 func authUser(sess_id string, resp *AuthservResp) {
@@ -109,6 +118,7 @@ func getWeather(w http.ResponseWriter, r *http.Request){
     var auth AuthservResp
     authUser(wetreq.Session_id, &auth)
     fmt.Println("got data back from auth serv", auth)
+    fmt.Println("auth decoded", auth.DD)
 
     // Check local cache
     var resp WeatherResp
@@ -128,7 +138,7 @@ func getWeather(w http.ResponseWriter, r *http.Request){
     // save to file
 
     // record user action
-    recordUserAction(wetreq, auth.UserId, resp.ImgUrl)
+    recordUserAction(wetreq, auth.DD.UID, resp.ImgUrl)
 
     // send response
     w.Header().Set("Content-Type", "application/json")
