@@ -1,11 +1,11 @@
 netname := skynet
 reponame := git@github.com:airavata-courses/JARVIS.git
-microservices := static_webserver api_gateway
-branches := a1-static-server a1-api-gateway
+microservices := static_webserver s3get_server cache_server api_gateway
+branches := a1-static-server a1-s3data a1-cache a1-api-gateway
 # For dev test
-# branches := a1-static-server-dev a1-api-gateway-dev
+# branches := a1-static-server-dev a1-s3data-dev a1-cache-dev a1-api-gateway-dev
 
-all: checkout_code build_dockers
+all: checkout_code create_softlinks build_dockers
 	echo "Building project"
 
 checkout_code:
@@ -14,6 +14,9 @@ checkout_code:
 	-for branch in ${branches} ; do \
 		git clone -b $${branch} ${reponame} build/$${branch} ;\
 	done
+
+create_softlinks:
+	-ln -s $$(pwd)/build/a1-static-server-dev/www/html/assets/img build/a1-s3data-dev/imgdump
 	
 build_dockers:
 	echo "Creating docker network"
@@ -28,7 +31,7 @@ cleanup_all: cleanup
 
 cleanup: rm_containers rm_images
 	echo "Cleaning up"
-	docker network rm ${netname}
+	-docker network rm ${netname}
 
 rm_containers:
 	-for mserv in ${microservices}; do\
