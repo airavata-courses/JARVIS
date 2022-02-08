@@ -157,18 +157,20 @@ app.post('/login_auth/signup', jsonParser, async function(req,res){
             console.log("new_vals : ",new_vals)
             var sess = await collection.updateOne(myquery,new_vals)
             console.log("sess : ",sess)
-            axios.post("https://ea377b7e-7938-451f-bd1f-fbbbb513ab65.mock.pstmn.io/api/adduser",{
-                "UNIQUE_USER_ID" : opx._id
-            }).then(res => {
-                console.log("STATUS SUCCESSFUL");
-              })
-              .catch(error => {
-                console.error(error)
-              })
-              var auth_decoded = jwt.verify(token,key);
-              console.log("AUTH_DECODED : ",auth_decoded);
-              uid = auth_decoded.UNIQUE_USER_ID;
-              console.log("uid : ",uid);
+            var auth_decoded = jwt.verify(token,key);
+            console.log("AUTH_DECODED : ",auth_decoded);
+            uid = auth_decoded.UNIQUE_USER_ID;
+            console.log("uid : ",uid);
+            post_body = {
+                "user_unique_id" : uid, "status" : 1, "modified_by" : 0,"modified_at": new Date()
+            }
+            console.log("post_body : ",post_body);
+            axios.post("http://db_app/addUser",post_body).then(res => {
+            console.log("STATUS SUCCESSFUL");
+            })
+            .catch(error => {
+            console.error(error)
+            })
             op_res = {"session_id" : token,"USER_UNIQUE_ID": uid}
             console.log("op_res : ",op_res)
             res.json(op_res)
