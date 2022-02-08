@@ -170,7 +170,7 @@ $(function() {
             function (data){
                 console.log("Got session id " + data.session_id);
                 setCookie("session_id", data.session_id);
-                window.location.href = "/";
+                window.location.href = "/home.html";
             },
             "json").fail(function(){
                 delCookie("user");
@@ -189,7 +189,7 @@ $(function() {
             function (data){
                 console.log("Got session id " + data.session_id);
                 setCookie("session_id", data.session_id);
-                window.location.href = "/";
+                window.location.href = "/home.html";
             },
             "json").fail(function(){
                 delCookie("user");
