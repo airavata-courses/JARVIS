@@ -154,4 +154,50 @@ $(function() {
 
    // });
 
+
+    // My custom functions that doesn't concern UI
+    //
+    let api_prefix = "/api/as"
+
+    $("#login-btn").click(function() {
+        let uname = $("#name").val();
+        let pass = $("#pass").val();
+        setCookie("user", uname);
+
+        $.post(api_prefix + "/login",
+            {"user" : uname,
+            "pass": pass},
+            function (data){
+                console.log("Got session id " + data.session_id);
+                setCookie("session_id", data.session_id);
+                setCookie("USER_UNIQUE_ID", data.USER_UNIQUE_ID);
+                window.location.href = "/home.html";
+            },
+            "json").fail(function(){
+                delCookie("user");
+            });
+
+    })
+
+   $("#signup-btn").click(function() {
+        let uname = $("#regname").val();
+        let pass = $("#regpass").val();
+        setCookie("user", uname);
+
+        $.post(api_prefix + "/signup",
+            {"user" : uname,
+             "pass": pass},
+            function (data){
+                console.log("Got session id " + data.session_id);
+                setCookie("session_id", data.session_id);
+                setCookie("USER_UNIQUE_ID", data.USER_UNIQUE_ID);
+                window.location.href = "/home.html";
+            },
+            "json").fail(function(){
+                delCookie("user");
+            });
+            
+    })
+
+
 });
