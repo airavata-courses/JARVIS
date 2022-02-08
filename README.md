@@ -2,15 +2,19 @@
 
 ## Napkin Diagram
 
-![Napkin Diagram](https://user-images.githubusercontent.com/13479281/150602603-030a2c13-3171-4840-ba33-5bcfcf464c89.png)
+![Napkin Diagram](https://user-images.githubusercontent.com/22557048/152892846-99e400bf-0cf2-44ba-a407-ce3cb34d833b.png)
+
 
 ## Design Diagram
 
-![Design Diagram](https://user-images.githubusercontent.com/13479281/151052280-ec45ed2c-9979-45e4-81e0-7a03f1c4dde2.png)
+![Design Diagram](https://user-images.githubusercontent.com/22557048/152893155-2e558d2c-d486-4070-89b9-abf9153e8221.png)
+
 
 ## User Flow Diagram
 
-![User flow diagram](https://user-images.githubusercontent.com/13479281/151054064-f3e3af91-6b2e-4096-89de-f733d6baa1b2.png)
+![User flow diagram](https://user-images.githubusercontent.com/22557048/152893438-234bd3c7-8ea7-4c45-9b13-2c7cca853d22.png)
+
+
 
 ## Requirements
 - Docker needs to be installed in the host system
