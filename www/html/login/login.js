@@ -190,7 +190,7 @@ $(function() {
             function (data){
                 console.log("Got session id " + data.session_id);
                 setCookie("session_id", data.session_id);
-                setCookie("UNIQUE_USER_ID", data.UNIQUE_USER_ID);
+                setCookie("USER_UNIQUE_ID", data.USER_UNIQUE_ID);
                 window.location.href = "/home.html";
             },
             "json").fail(function(){
