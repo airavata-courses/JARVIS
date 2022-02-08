@@ -25,13 +25,13 @@
 Just run make
 > make
 
-Head to a web browser and go to http://localhost:8000 to access the application
+Head to a web browser and go to http://localhost to access the application
 
 To cleanup
 > make cleanup
 
 ## Functionality
-- Open Web browser and launch http://localhost:8000
+- Open Web browser and launch http://localhost
 - Click on Sign in button, you'll be navigated to login page to enter your credentials
 - First time user should register by clicking on + icon, enter username, password and click on next button, you'll be logged in and navigated to home page.
 - If you are already registered you can enter your credentials and login by clicking on go button.
