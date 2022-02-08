@@ -16,7 +16,7 @@ checkout_code:
 	done
 
 create_softlinks:
-	-ln -s $$(pwd)/build/a1-static-server-dev/www/html/assets/img build/a1-s3data-dev/imgdump
+	-ln -s $$(pwd)/build/a1-static-server/www/html/assets/img build/a1-s3data/imgdump
 	
 build_dockers:
 	echo "Creating docker network"
