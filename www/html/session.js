@@ -33,5 +33,6 @@ function testCookie(){
 function sessionCleanup(){
     delCookie("session_id");
     delCookie("user");
+    delCookie("USER_UNIQUE_ID");
     window.location.href = "/";
 }
