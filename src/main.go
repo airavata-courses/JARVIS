@@ -11,7 +11,7 @@ import(
 
 var authserv string = "https://12877c5d-aa48-4583-b999-321b06efc7ca.mock.pstmn.io"+"/api/check_token"
 var s3serv string = "http://s3get_server"+"/api/nexraddata"
-var dbserv string = "https://ea377b7e-7938-451f-bd1f-fbbbb513ab65.mock.pstmn.io"+"/api/adduserhistory"
+var dbserv string = "http://dbapp"+"/addUserSearchRecord"
 
 
 type AuthservReq struct{
@@ -60,10 +60,11 @@ func reqS3(req WeatherReq, resp *S3Resp){
 }
 
 type UserActionReq struct{
-    Datetime string `json:"datetime"`
-    Location string `json:"loction"`
-    UserId string `json:"user_id"`
-    ImgUrl string `json:"img_url"`
+    Datetime string `json:"searched_time"`
+    Location string `json:"place_name"`
+    UserId string `json:"user_unique_id"`
+    ImgUrl string `json:"data_link"`
+    LocationSearchedAt string `json:"location_searched_at"`
 }
 
 func recordUserAction(wreq WeatherReq, uid string, imgurl string) {
@@ -72,14 +73,19 @@ func recordUserAction(wreq WeatherReq, uid string, imgurl string) {
     req.Location = wreq.Location
     req.UserId = uid
     req.ImgUrl = imgurl
+    req.LocationSearchedAt = wreq.Datetime
 
+    fmt.Println("Adding user record")
+    fmt.Println(req)
     postbody, _ := json.Marshal(req)
     reqbody := bytes.NewBuffer(postbody)
 
-    _, err := http.Post(dbserv, "application/json", reqbody)
+    respbody, err := http.Post(dbserv, "application/json", reqbody)
     if  err != nil{
         log.Fatalln(err)
     }
+    fmt.Println("Got data back")
+    fmt.Println(respbody)
 }
 
 type WeatherReq struct {
