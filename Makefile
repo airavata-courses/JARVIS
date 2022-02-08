@@ -1,9 +1,9 @@
 netname := skynet
 reponame := git@github.com:airavata-courses/JARVIS.git
-microservices := static_webserver s3get_server cache_server api_gateway
-branches := a1-static-server a1-s3data a1-cache a1-api-gateway
+microservices := static_webserver auth_server dbapp postgres_db s3get_server cache_server api_gateway
+branches := a1-static-server a1-authserver a1-webserver-DBAccess a1-s3data a1-cache a1-api-gateway
 # For dev test
-# branches := a1-static-server-dev a1-s3data-dev a1-cache-dev a1-api-gateway-dev
+# branches := a1-static-server-dev a1-authserver-dev a1-webserver-DBAccess-dev a1-s3data-dev a1-cache-dev a1-api-gateway-dev
 
 all: checkout_code create_softlinks build_dockers
 	echo "Building project"
