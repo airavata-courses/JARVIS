@@ -165,7 +165,7 @@ app.post('/login_auth/signup', jsonParser, async function(req,res){
                 "user_unique_id" : uid, "status" : 1, "modified_by" : 0,"modified_at": new Date()
             }
             console.log("post_body : ",post_body);
-            axios.post("http://db_app/addUser",post_body).then(res => {
+            axios.post("http://dbapp/addUser",post_body).then(res => {
             console.log("STATUS SUCCESSFUL");
             })
             .catch(error => {
