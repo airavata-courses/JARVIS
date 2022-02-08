@@ -17,6 +17,7 @@
 
 
 ## Requirements
+- Hard requirement: Linux system
 - Docker needs to be installed in the host system
 - The entire project runs on a single machine
 - requires ``make`` to build
