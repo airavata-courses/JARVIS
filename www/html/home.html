@@ -86,5 +86,26 @@
                     function history(){
                         location.href = "history.html";
                     }
+                    $(function(){
+                        var dtToday = new Date();
+
+                        var month = dtToday.getMonth() + 1;
+                        var day = dtToday.getDate();
+                        var year = dtToday.getFullYear();
+                        var hours = dtToday.getHours();
+                        var min = dtToday.getMinutes();
+
+                        if(month < 10)
+                            month = '0' + month.toString();
+                        if(day < 10)
+                            day = '0' + day.toString();
+                        if(hours < 10)
+                            hours = '0' + hours.toString();
+                        if(min < 10)
+                            min = '0' + min.toString();
+
+                        var maxDate = year + '-' + month + '-' + day + 'T'+ hours + ':' + min;    
+                        $('#datetime-field').attr('max', maxDate);
+                    });
                 </script>
     </html>
