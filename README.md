@@ -18,6 +18,7 @@
 
 ## Requirements
 - Hard requirement: Linux system
+- If there is any error in RUN apt install -y mongodb-org during make, go to a1-authserver/Dockerfile. line 10. if [arch=amd64] change it to [arch=arm64] else if [arch=arm64], change it to [arch=amd64].
 - Docker needs to be installed in the host system
 - The entire project runs on a single machine
 - requires ``make`` to build
@@ -30,7 +31,6 @@ Head to a web browser and go to http://localhost to access the application
 
 To cleanup
 > make cleanup
-
 ## Functionality
 - Open Web browser and launch http://localhost
 - Click on Sign in button, you'll be navigated to login page to enter your credentials
