@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  api_service:
+    build: .
+    restart: always
+    ports:
+      - 8088:8088
+    depends_on:
+      - postgres_db
+  postgres_db:
+    image: "postgres:11.4"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - "./ads_workingv1.3.sql:/docker-entrypoint-initdb.d/test.sql"
