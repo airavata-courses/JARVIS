@@ -80,7 +80,9 @@ try{
         console.log("new_vals : ",new_vals)
         var sess = await collection.updateOne(myquery,new_vals)
         console.log("sess : ",sess)
-        res.json({"session_id" : token,"USER_UNIQUE_ID" : opx._id})
+        op_res = {"session_id" : token,"USER_UNIQUE_ID" : opx._id}
+        console.log("op_res : ",op_res)
+        res.json(op_res)
     }else{
         res.json({"STATUS" : "ERROR IN LOGING IN"})
     }
@@ -159,7 +161,9 @@ app.post('/login_auth/signup', jsonParser, async function(req,res){
               .catch(error => {
                 console.error(error)
               })
-            res.json({"session_id" : token,"USER_UNIQUE_ID": opx._id})
+            op_res = {"session_id" : token,"USER_UNIQUE_ID": opx._id}
+            console.log("op_res : ",op_res)
+            res.json(op_res)
         }else{
             res.json({"STATUS" : "ERROR SIGNING UP"})
         }
