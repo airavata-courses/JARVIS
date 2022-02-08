@@ -30,3 +30,12 @@ Head to a web browser and go to http://localhost:8000 to access the application
 To cleanup
 > make cleanup
 
+## Functionality
+- Open Web browser and launch http://localhost:8000
+- Click on Sign in button, you'll be navigated to login page to enter your credentials
+- First time user should register by clicking on + icon, enter username, password and click on next button, you'll be logged in and navigated to home page.
+- If you are already registered you can enter your credentials and login by clicking on go button.
+- Once you are on home page select location and date time and click on find. You'll have to wait for a few seconds for response.
+- A map with reflexivity plot is generated.
+- On homepage you can view user history by clicking on history button which navigates you to history page.
+- On homepage you can logout by clicking on logout button which navigates you to index page.
