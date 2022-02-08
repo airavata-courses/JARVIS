@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ads.assignment1.dbaccess.entity.User;
 
+//user_master repository
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer> {
 	

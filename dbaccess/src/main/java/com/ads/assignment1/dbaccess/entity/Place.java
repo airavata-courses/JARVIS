@@ -18,12 +18,14 @@ public class Place {
 
     @Id
     @GeneratedValue
+    // Columns of the place_master table
     private int place_id;
     private String place_name;
     private double logi;
     private double lat;
     private Integer status;
     
+    // Setter and getter of each column 
 	public int getPlace_id() {
 		return place_id;
 	}

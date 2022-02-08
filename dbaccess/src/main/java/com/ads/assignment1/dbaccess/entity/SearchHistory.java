@@ -52,6 +52,7 @@ parameters = {
 public class SearchHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// Columns of history_master table
 	@Column(columnDefinition = "serial")
 	private long history_id;
 	
@@ -76,7 +77,7 @@ public class SearchHistory {
 	@Column (name = "location_searched_at")
 	private String location_searched_at;
 
-	
+	// Setter and getter of each column
 	public long getHistory_id() {
 		return history_id;
 	}
@@ -117,6 +118,14 @@ public class SearchHistory {
 		this.status = status;
 	}
 
+	public String getSearched_time() {
+		return searched_time;
+	}
+
+	public void setSearched_time(String searched_time) {
+		this.searched_time = searched_time;
+	}
+	
 	public Integer getCreated_by() {
 		return created_by;
 	}

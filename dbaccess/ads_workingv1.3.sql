@@ -35,43 +35,29 @@ CREATE TABLE myapp.history_master (
 	FOREIGN KEY(place_id) REFERENCES myapp.place_master(place_id)
 );
 
+-- Indianapolis-KIND
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KIND', 39.791, -86.148,1 );
+--Chicago-KLOT
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KLOT', 41.88, -87.623,1 );
+--Los Angels-KVTX
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KVTX', 34.052, -118.24,1 );
 
-/*
-INSERT INTO myapp.user_master (user_unique_id,status,modified_by, modified_at) values ( 'NILESH', 1 , 100, 'TimeA'
---(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE)
-);
+-- Washington DC-KLWX
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KLWX', 38.889, -77.03,1 );
+--Dallas  - KFWS
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KFWS', 32.779, -96.80,1 );
+--Boston - KBOX
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KBOX', 42.361, -71.057,1 );
 
-INSERT INTO myapp.user_master (user_unique_id,status,modified_by, modified_at) values ( 'Snehal', 1 , 100, 'TimeB'
---(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE)
-);
-*/
-INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'MN', 100, 200,1 );
+-- San Francisco  - KMUX
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KMUX', 37.733, -122.446,1 );
+--New York  - KOKX
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KOKX', 40.730, -73.935,1 );
+--Miami  -  KAMX
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KAMX', 25.76, -80.191,1 );
 
-INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'Boomington', 100, 200,1 );
-
-INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'Shakopee', 100, 200,1 );
-
-
---DROP TABLE myapp.history_master;
-
-/*
-INSERT INTO myapp.history_master ( user_id,place_id, data_link, status, created_by , searched_time, created_at )
-values ( 1 , 2, 'C:temp', 1,100, 'Adata', 'TimeD'
---(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE) 
-);
-
-INSERT INTO myapp.history_master ( user_id,place_id, data_link, status, created_by , searched_time , created_at )
-values ( 1 , 1, 'C:temp', 1, 200, 'Adata', 'TimeC'
---(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE) 
-);
-
-
-INSERT INTO myapp.history_master ( user_id,place_id, data_link, status, created_by , searched_time, created_at )
-values ( 2 , 1, 'C:temp', 1, 300, 'Adata', 'TimeD'
---(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE) 
-);
-*/
-
+-- Raleigh  - KRAX
+INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KRAX', 35.78, -78.644,1 );
 
 select * from myapp.user_master;
 select * from myapp.place_master;
@@ -141,7 +127,6 @@ $$
 			1, 
 			100, 
 			userCreatedAt
-			--(SELECT CURRENT_TIMESTAMP(0)::TIMESTAMP WITHOUT TIME ZONE)
 		);
 		return true;
 	END;
@@ -180,27 +165,6 @@ $$
 	END;
 $$ language plpgsql;
 
+select * from myapp.GetUserSearchHistory('Snehal');
 
-/*
-CREATE OR REPLACE FUNCTION myapp.InsertUserHistory ( unique_id text, place text, data_link text)
-returns table(
-	place_name text,
-	data_link text,
-	searched_at timestamp without time zone
-	) as
-$$
-   
-   SELECT 
-		p.place_name,
-		h.data_link , 
-		h.created_at as searched_at 
-	from myapp.history_master h 
-	JOIN myapp.user_master u 
-	on h.user_id = u.user_id 
-	JOIN myapp.place_master p 
-	on p.place_id = h.place_id
-	where u.user_unique_id = unique_id;
-   
-$$ language sql;
 
-*/

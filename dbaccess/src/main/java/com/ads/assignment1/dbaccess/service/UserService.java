@@ -19,7 +19,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-
+// Service layer handles business module
 @Service
 public class UserService {
     @Autowired
@@ -37,10 +37,12 @@ public class UserService {
     public UserService(){
 
     }
+    // Save user details 
     public User saveUser(User objUser) {
         return userRepository.save(objUser);
     }
     
+    // Insert user details 
     public boolean InsertUserDetails(String userUniqueId, String userCreatedAt ){
         return userRepository.InsertUserDetails(userUniqueId, userCreatedAt);
     }
@@ -53,6 +55,7 @@ public class UserService {
         return placeRepository.findAll();
     }
     
+    // Insert user history details
     public boolean InsertUserSearchRecord(UserInsertSearchRecord obj ){
         return historyRepository.InsertUserSearchRecord(obj.getUser_unique_id(), obj.getPlace_name(),
         		obj.getData_link(),obj.getSearched_time(), obj.getLocation_searched_at());
@@ -69,6 +72,8 @@ public class UserService {
 		return historyRepository.ProcGetUserSearchHistory(userUniqueId);
     }
 	
+	
+	// Display user history details 
 	@Transactional(readOnly = true)
 	public List<UserSearchHistory> getUserSearchHistory(String userUniqueId){
 		

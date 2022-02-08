@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import com.ads.assignment1.dbaccess.entity.SearchHistory;
-
+// history_master repository
 @Repository
 public interface HistoryRepository  extends JpaRepository<SearchHistory, Long> {
 

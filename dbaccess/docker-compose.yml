@@ -1,32 +1,16 @@
 version: "3.7"
 services:
-  spring_dev:
-    build:
-      context: .
-    image: maven/builder:0.0.1
-    container_name: spring_container_api
+  api_service:
+    build: .
+    restart: always
     ports:
-      - "8080:8080"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=userhistory      
-    volumes:
-      - "./src:/build/src"
-      - "./target:/build/target:cached"
-    command: "mvn spring-boot:run"
+      - 8088:8088
     depends_on:
-      - spring_dev_db    
-  spring_dev_db:
-    container_name: spring_dev_db
-    image: "postgres:12"
-    ports:
-      - "5432:5432"
+      - postgres_db
+  postgres_db:
+    image: "postgres:11.4"
+    restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=userhistory
+      POSTGRES_PASSWORD: password
     volumes:
-      - spring_dev_data:/var/lib/postgresql/data
-volumes:
-  spring_dev_data: {}
+      - "./ads_workingv1.3.sql:/docker-entrypoint-initdb.d/test.sql"

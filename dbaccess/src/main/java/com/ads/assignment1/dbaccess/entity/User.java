@@ -35,13 +35,14 @@ public class User {
 
     @Id
     @GeneratedValue
+    // user_master table column
     private int user_id;
     private String user_unique_id;
     private Integer status;
 	private Integer modified_by;
     private String modified_at;
     
-    
+    // Setter and getter of each column
     public int getUser_id() {
 		return user_id;
 	}

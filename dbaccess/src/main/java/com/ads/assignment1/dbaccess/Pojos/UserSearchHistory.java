@@ -2,7 +2,7 @@ package com.ads.assignment1.dbaccess.Pojos;
 
 import java.sql.Timestamp;
 
-
+// Class is used to searched result set mapping 
 public class UserSearchHistory {
 
 	private String place_name;
@@ -16,7 +16,7 @@ public class UserSearchHistory {
 		this.searched_time = searched_time;
 		this.location_searched_at = location_searched_at;
 	}
-
+	// Setter and getter of each column
 	public String getPlace_name() {
 		return place_name;
 	}
