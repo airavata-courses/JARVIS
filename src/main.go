@@ -9,9 +9,9 @@ import(
     "github.com/gorilla/mux"
 )
 
-var authserv string = "https://12877c5d-aa48-4583-b999-321b06efc7ca.mock.pstmn.io"+"/api/check_token"
+var authserv string = "http://auth_server"+"/login_auth/verify_token"
 var s3serv string = "http://s3get_server"+"/api/nexraddata"
-var dbserv string = "https://ea377b7e-7938-451f-bd1f-fbbbb513ab65.mock.pstmn.io"+"/api/adduserhistory"
+var dbserv string = "http://dbapp"+"/addUserSearchRecord"
 
 
 type AuthservReq struct{
@@ -19,7 +19,16 @@ type AuthservReq struct{
 }
 
 type AuthservResp struct{
-    UserId string `json:"user_id"`
+    Status string `json:"STATUS"`
+    DD *DecodedData `json:"DECODED_DATA"`
+}
+
+type DecodedData struct{
+    Email string `json:"EMAIL_ID"`
+    UID string `json:"UNIQUE_USER_ID"`
+    LogDt string `json:"LOGIN_DATETIME"`
+    iat int64 `json:"iat"`
+    exp int64 `json:"exp"`
 }
 
 func authUser(sess_id string, resp *AuthservResp) {
@@ -60,10 +69,11 @@ func reqS3(req WeatherReq, resp *S3Resp){
 }
 
 type UserActionReq struct{
-    Datetime string `json:"datetime"`
-    Location string `json:"loction"`
-    UserId string `json:"user_id"`
-    ImgUrl string `json:"img_url"`
+    Datetime string `json:"searched_time"`
+    Location string `json:"place_name"`
+    UserId string `json:"user_unique_id"`
+    ImgUrl string `json:"data_link"`
+    LocationSearchedAt string `json:"location_searched_at"`
 }
 
 func recordUserAction(wreq WeatherReq, uid string, imgurl string) {
@@ -72,14 +82,19 @@ func recordUserAction(wreq WeatherReq, uid string, imgurl string) {
     req.Location = wreq.Location
     req.UserId = uid
     req.ImgUrl = imgurl
+    req.LocationSearchedAt = wreq.Datetime
 
+    fmt.Println("Adding user record")
+    fmt.Println(req)
     postbody, _ := json.Marshal(req)
     reqbody := bytes.NewBuffer(postbody)
 
-    _, err := http.Post(dbserv, "application/json", reqbody)
+    respbody, err := http.Post(dbserv, "application/json", reqbody)
     if  err != nil{
         log.Fatalln(err)
     }
+    fmt.Println("Got data back")
+    fmt.Println(respbody)
 }
 
 type WeatherReq struct {
@@ -103,6 +118,7 @@ func getWeather(w http.ResponseWriter, r *http.Request){
     var auth AuthservResp
     authUser(wetreq.Session_id, &auth)
     fmt.Println("got data back from auth serv", auth)
+    fmt.Println("auth decoded", auth.DD)
 
     // Check local cache
     var resp WeatherResp
@@ -122,7 +138,7 @@ func getWeather(w http.ResponseWriter, r *http.Request){
     // save to file
 
     // record user action
-    recordUserAction(wetreq, auth.UserId, resp.ImgUrl)
+    recordUserAction(wetreq, auth.DD.UID, resp.ImgUrl)
 
     // send response
     w.Header().Set("Content-Type", "application/json")
