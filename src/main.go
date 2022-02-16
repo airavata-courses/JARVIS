@@ -31,7 +31,7 @@ type DecodedData struct{
     exp int64 `json:"exp"`
 }
 
-func authUser(sess_id string, resp *AuthservResp) {
+func authUser(sess_id string, resp *AuthservResp) int{
     var req AuthservReq
     req.SessionId = sess_id
 
@@ -40,32 +40,38 @@ func authUser(sess_id string, resp *AuthservResp) {
 
     respbody, err := http.Post(authserv, "application/json", reqbody)
     if  err != nil{
-        log.Fatalln(err)
+        log.Println(err)
+        return -1;
     }
 
     err = json.NewDecoder(respbody.Body).Decode(resp)
     if err != nil {
-        log.Fatalln(err)
+        log.Println(err)
+        return -1;
     }
+    return 0;
 }
 
 type S3Resp struct{
     ImgUrl string `json:"img_url"`
 }
-func reqS3(req WeatherReq, resp *S3Resp){
+func reqS3(req WeatherReq, resp *S3Resp) int{
 
     postbody, _ := json.Marshal(req)
     reqbody := bytes.NewBuffer(postbody)
 
     respbody, err := http.Post(s3serv, "application/json", reqbody)
     if  err != nil{
-        log.Fatalln(err)
+        log.Println(err)
+        return -1;
     }
 
     err = json.NewDecoder(respbody.Body).Decode(resp)
     if err != nil {
-        log.Fatalln(err)
+        log.Println(err)
+        return -1;
     }
+    return 0;
 }
 
 type UserActionReq struct{
@@ -76,7 +82,7 @@ type UserActionReq struct{
     LocationSearchedAt string `json:"location_searched_at"`
 }
 
-func recordUserAction(wreq WeatherReq, uid string, imgurl string) {
+func recordUserAction(wreq WeatherReq, uid string, imgurl string) int{
     var req UserActionReq
     req.Datetime = wreq.Datetime
     req.Location = wreq.Location
@@ -91,10 +97,12 @@ func recordUserAction(wreq WeatherReq, uid string, imgurl string) {
 
     respbody, err := http.Post(dbserv, "application/json", reqbody)
     if  err != nil{
-        log.Fatalln(err)
+        log.Println(err)
+        return -1;
     }
     fmt.Println("Got data back")
     fmt.Println(respbody)
+    return 0;
 }
 
 type WeatherReq struct {
@@ -107,29 +115,43 @@ type WeatherResp struct {
     ImgUrl string `json:"img_url"`
 }
 
+type WeatherErrResp struct {
+    ErrMsg string `json:"err_msg"`
+}
+
 func getWeather(w http.ResponseWriter, r *http.Request){
 
+    var errresp WeatherErrResp
     var wetreq WeatherReq
+    var resp WeatherResp
+    var img ImDb
+    var found bool
+
     _ = json.NewDecoder(r.Body).Decode(&wetreq)
 
     fmt.Println("Received request", wetreq)
 
     // Authenticate the user
     var auth AuthservResp
-    authUser(wetreq.Session_id, &auth)
+    if (authUser(wetreq.Session_id, &auth) != 0){
+        errresp.ErrMsg = "Failed to authenticate"
+        goto fail;
+    }
     fmt.Println("got data back from auth serv", auth)
     fmt.Println("auth decoded", auth.DD)
 
     // Check local cache
-    var resp WeatherResp
-    img, found := LocalDbLookup(wetreq)
+    img, found = LocalDbLookup(wetreq)
     if found {
         fmt.Println("Found data locally", img)
         resp.ImgUrl = img.ImgUrl
     } else {
         // request for map from s3
         var s3ret S3Resp
-        reqS3(wetreq, &s3ret)
+        if (reqS3(wetreq, &s3ret) != 0){
+            errresp.ErrMsg = "Failed to get data from s3"
+            goto fail;
+        }
         fmt.Println("got data back from s3 serv", s3ret)
         resp.ImgUrl = s3ret.ImgUrl
         // Add to local cache
@@ -138,11 +160,18 @@ func getWeather(w http.ResponseWriter, r *http.Request){
     // save to file
 
     // record user action
-    recordUserAction(wetreq, auth.DD.UID, resp.ImgUrl)
+    if (recordUserAction(wetreq, auth.DD.UID, resp.ImgUrl) != 0){
+        errresp.ErrMsg = "Failed to record user actions"
+        goto fail;
+    }
 
     // send response
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(resp)
+
+    fail:
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(errresp)
 }
 
 type ImDb struct {
