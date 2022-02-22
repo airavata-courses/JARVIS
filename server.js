@@ -64,7 +64,7 @@ try{
     var opx = await collection.findOne({"EMAIL_ID" : c1.EMAIL_ID})
     console.log("opx : ",opx)
     if(opx == null){
-        res.json({"STATUS": "ERROR","MESSAGE": "USER NOT FOUND"})
+        res.json({"status": "error","message": "User Not Found"})
     }
     console.log("opx.PASSWORD : ",opx.PASSWORD)
     var b = crypto.AES.decrypt(opx.PASSWORD,key);
@@ -84,11 +84,11 @@ try{
         console.log("AUTH_DECODED : ",auth_decoded);
         uid = auth_decoded.UNIQUE_USER_ID;
         console.log("uid : ",uid);
-        op_res = {"session_id" : token,"USER_UNIQUE_ID" : uid}
+        op_res = {"status":"success","session_id" : token,"USER_UNIQUE_ID" : uid}
         console.log("op_res : ",op_res)
         res.json(op_res)
     }else{
-        res.json({"STATUS" : "ERROR IN LOGING IN"})
+        res.json({"status":"error","message" : "Error Logging In"})
     }
 }catch(err){
     res.send("Error")
@@ -110,9 +110,9 @@ app.post('/login_auth/verify_token',jsonParser, async function(req,res){
         var get_data = await collection.findOne({"EMAIL_ID" : uid,"STATUS" : "ACTIVE"});
         console.log("get_data : ",get_data);
         if (get_data.SESSION_ID == req.body.session_id){
-            res.json({"STATUS" : "TOKEN VERIFIED", "DECODED_DATA" : auth_decoded})
+            res.json({"status" : "success", "DECODED_DATA" : auth_decoded})
         } else {
-            res.json({"STATUS":"ERROR IN SESSION ID"})
+            res.json({"status":"error","message":"error in session id"})
         }
     }catch(err){
         res.send("Error")
@@ -146,7 +146,7 @@ app.post('/login_auth/signup', jsonParser, async function(req,res){
             await collection.insertOne(c1);
             var opx = await collection.findOne({"EMAIL_ID" : c1.EMAIL_ID})
             if (opx == null) {
-                res.json({"STATUS":"ERROR SIGNING UP"})
+                res.json({"status":"error","message":"User doesn't exist"})
             }
             console.log("opx : ",opx)
             var token = jwt.sign({"EMAIL_ID" : opx.EMAIL_ID,"UNIQUE_USER_ID" : opx._id,"LOGIN_DATETIME" : new Date()},key,{expiresIn: '1d'})
@@ -171,11 +171,11 @@ app.post('/login_auth/signup', jsonParser, async function(req,res){
             .catch(error => {
             console.error(error)
             })
-            op_res = {"session_id" : token,"USER_UNIQUE_ID": uid}
+            op_res = {"status":"success","session_id" : token,"USER_UNIQUE_ID": uid}
             console.log("op_res : ",op_res)
             res.json(op_res)
         }else{
-            res.json({"STATUS" : "ERROR SIGNING UP"})
+            res.json({"status" : "error", "message" : "ERROR SIGNING UP"})
         }
     }catch(err){
         res.send("Error")
