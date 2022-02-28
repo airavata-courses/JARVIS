@@ -14,7 +14,9 @@ import com.ads.assignment1.dbaccess.entity.User;
 import com.ads.assignment1.dbaccess.service.RestService;
 import com.ads.assignment1.dbaccess.service.UserService;
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://auth_server:80")
+// Local Debug
+// @CrossOrigin(origins = "http://localhost:9000")
 @RestController
 public class UserController {
 
@@ -25,13 +27,6 @@ public class UserController {
     
     public boolean return_status;
     
-    // Add new user details to user_master table 
-    @PostMapping("addUser")
-    public List<UserStatus> InsertUserDetails(@RequestBody User objUser ){
-    	
-        //return service.InsertUserDetails(objUser.getUser_unique_id(), objUser.getModified_at());
-    	return service.InsertUser(objUser.getUser_unique_id(), objUser.getModified_at());
-    }
     
     // Get all the user list
     @GetMapping("/getAllUsers")
@@ -51,11 +46,37 @@ public class UserController {
 		return service.getHistory();
 	}
 	
-	// Add new history searched record by user to history_master
+	// Add new user details to user_master table 
+    @PostMapping("addUser")
+    public List<UserStatus> InsertUserDetails(@RequestBody User objUser ){
+    	
+        //return service.InsertUserDetails(objUser.getUser_unique_id(), objUser.getModified_at());
+    	return service.InsertUser(objUser.getSession_id(), objUser.getModified_at());
+    }
+    
+    // Add new history searched record by user to history_master
     @PostMapping("addUserSearchRecord")
     public List<UserStatus> InsertUserDetails(@RequestBody UserInsertSearchRecord obj ){
+    	System.out.println( "Function called ");
     	return service.InsertUserSearchRecord(obj);
     }
+    
+
+    // Get history searched record by user
+	@PostMapping("getUserSearchHistory")
+	public List<UserSearchHistory> getUserHistory(@RequestBody User objUser  ){
+		return service.getUserSearchHistory(objUser.getSession_id());
+    }
+    /*
+     * Auth server - Verify token validation
+    // Add new history searched record by user to history_master
+    @PostMapping("getUserUniqueId")
+    public String getUserUniqueID(@RequestBody UserInsertSearchRecord obj ){
+    	System.out.println( "Get User Unique ID");
+    	return restService.getUserUniqueID(obj.getSession_id());
+    }
+    */
+    
     /*
     @PostMapping("addUserSearchRecord")
     public boolean InsertUserDetails(@RequestBody UserInsertSearchRecord obj ){
@@ -63,12 +84,6 @@ public class UserController {
     }
     */
     
-    @GetMapping("getUserSearchHistory")
-	public void getUserUniqueID(@RequestParam String sessionId)
-	{
-		String output = restService.createPost(sessionId);
-		System.out.println(output);
-	}
    /*
     // Normal Array String
      
@@ -87,10 +102,5 @@ public class UserController {
     }
     */
 	
-    // Get history searched record by user
-	@PostMapping("getUserSearchHistory1")
-	public List<UserSearchHistory> getUserHistory(@RequestBody User objUser  ){
-		return service.getUserSearchHistory(objUser.getUser_unique_id());
-    }
 	
 }

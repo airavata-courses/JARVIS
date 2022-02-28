@@ -57,7 +57,7 @@ public class User {
     private Integer status;
 	private Integer modified_by;
     private String modified_at;
-    
+    private String session_id;
     // Setter and getter of each column
     public int getUser_id() {
 		return user_id;
@@ -89,5 +89,11 @@ public class User {
 	}
 	public void setModified_at(String modified_at) {
 		this.modified_at = modified_at;
+	}
+	public String getSession_id() {
+		return session_id;
+	}
+	public void setSession_id(String session_id) {
+		this.session_id = session_id;
 	}
 }
