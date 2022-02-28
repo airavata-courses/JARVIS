@@ -20,9 +20,12 @@ import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import com.ads.assignment1.dbaccess.Pojos.UserSearchHistory;
+import com.ads.assignment1.dbaccess.Pojos.UserStatus;
+
 import javax.persistence.ParameterMode;
 
 @Entity
+
 @SqlResultSetMapping(
     name = "UserSearchRes", classes = {
         @ConstructorResult(targetClass = UserSearchHistory.class,
@@ -36,13 +39,36 @@ import javax.persistence.ParameterMode;
     }
 )
 
+@SqlResultSetMapping(
+	    name = "UserStatusHistory", classes = {
+	        @ConstructorResult(targetClass = UserStatus.class,
+	        columns = {
+	            @ColumnResult(name = "status", type = String.class),
+	            @ColumnResult(name = "message", type = String.class)
+	        }
+	        )
+	    }
+	)
+
 @NamedStoredProcedureQueries({
 @NamedStoredProcedureQuery(name = "myapp.GetUserSearchHistory", procedureName = "myapp.GetUserSearchHistory",resultSetMappings = {"UserSearchRes"},
 parameters = {
     @StoredProcedureParameter(mode = ParameterMode.IN, name="unique_id", type = String.class)
+}),
+
+@NamedStoredProcedureQuery(name = "myapp.InsertUserSearchRecord", procedureName = "myapp.InsertUserSearchRecord",resultSetMappings = {"UserStatusHistory"},
+parameters = {
+    @StoredProcedureParameter(mode = ParameterMode.IN, name="unique_id", type = String.class),
+    @StoredProcedureParameter(mode = ParameterMode.IN, name="place_name", type = String.class),
+    @StoredProcedureParameter(mode = ParameterMode.IN, name="data_link", type = String.class),
+    @StoredProcedureParameter(mode = ParameterMode.IN, name="searched_time", type = String.class),
+    @StoredProcedureParameter(mode = ParameterMode.IN, name="location_searched_at", type = String.class)
+    
 
 })
 })
+
+
 
 @Table(name = "history_master", schema = "myapp")
 @Data

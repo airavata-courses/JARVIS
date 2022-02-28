@@ -22,7 +22,7 @@ public class DbaccessApplication {
 	public static void main(String[] args) {
 		//SpringApplication.run(DbaccessApplication.class, args);
 		SpringApplication app = new SpringApplication(DbaccessApplication.class);
-		app.setDefaultProperties(Collections.singletonMap("server.port", "80"));
+		app.setDefaultProperties(Collections.singletonMap("server.port", "8081"));
 		app.run(args);
 	}
 

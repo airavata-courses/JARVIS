@@ -35,6 +35,7 @@ CREATE TABLE myapp.history_master (
 	FOREIGN KEY(place_id) REFERENCES myapp.place_master(place_id)
 );
 
+
 -- Indianapolis-KIND
 INSERT INTO myapp.place_master ( place_name, lat,logi, status ) values ( 'KIND', 39.791, -86.148,1 );
 --Chicago-KLOT
@@ -105,66 +106,73 @@ $$
    
 $$ language sql;
 
+
 CREATE OR REPLACE FUNCTION myapp.InsertUser ( userUniqueId text, userCreatedAt text)
-returns  boolean as
+returns  table (status text, message text) as
 $$
 	DECLARE	
 
 	BEGIN
 		IF EXISTS ( SELECT 1 from myapp.user_master where user_unique_id = userUniqueId ) THEN
-			return false;
-		END IF;
+			return query(select 'Error' as status, 'User already exist' as message from myapp.user_master u where u.user_unique_id = userUniqueId );
+		ELSE
 		
-		INSERT INTO myapp.user_master 
-		( 
-			user_unique_id,
-			status,modified_by, 
-			modified_at
-		) 
-		values 
-		(
-			userUniqueId, 
-			1, 
-			100, 
-			userCreatedAt
-		);
-		return true;
+			INSERT INTO myapp.user_master 
+			( 
+				user_unique_id,
+				status,modified_by, 
+				modified_at
+			) 
+			values 
+			(
+				userUniqueId, 
+				1, 
+				100, 
+				userCreatedAt
+			);
+			return query(select 'Success' as status, 'User Created' as message from myapp.user_master u where u.user_unique_id = userUniqueId);
+		END IF;
 	END;
 $$ language plpgsql;
 
 
-
 CREATE OR REPLACE FUNCTION myapp.InsertUserSearchRecord ( userUniqueId text, placeName text, dataLink text, searchedTime text, locationSearchedAt text)
-returns  boolean as
+returns table (status text, message text) as
 $$
 	DECLARE	
 
 	BEGIN
-		IF NOT EXISTS ( SELECT 1 from myapp.user_master where user_unique_id = userUniqueId ) THEN
-			return false;
+		IF EXISTS ( SELECT 1 from myapp.user_master where user_unique_id = userUniqueId ) THEN
+			IF EXISTS ( SELECT 1 from myapp.place_master where place_name = placeName ) THEN
+				INSERT INTO myapp.history_master 
+				( 
+					user_id,place_id, data_link, status, 
+					created_by , searched_time, location_searched_at
+				)
+				VALUES
+				(
+					(SELECT  U1.user_id from myapp.user_master U1 where U1.user_unique_id = userUniqueId),
+					(SELECT P.place_id from myapp.place_master P where P.place_name = placeName ),
+					dataLink, 1,
+					100, searchedTime, 
+					locationSearchedAt
+				);
+				return query (select 'Success' as status, 'User History added' as message);
+			ELSE
+				return query (select 'Error' as status, 'Location not exist' as message);
+			END IF;
+				
+		ELSE
+			return query(select 'Error' as status, 'User not found' as message);
 		END IF;
 		
-		IF NOT EXISTS ( SELECT 1 from myapp.place_master where place_name = placeName ) THEN
-			return false;
-		END IF;
-		
-		INSERT INTO myapp.history_master 
-		( 
-			user_id,place_id, data_link, status, 
-			created_by , searched_time, location_searched_at
-		)
-		VALUES
-		(
-		(SELECT  U1.user_id from myapp.user_master U1 where U1.user_unique_id = userUniqueId),
-		( SELECT P.place_id from myapp.place_master P where P.place_name = placeName ),
-		dataLink, 1,
-		100, searchedTime, 
-		locationSearchedAt
-		);
-		return true;
 	END;
 $$ language plpgsql;
 
-select * from myapp.GetUserSearchHistory('Snehal');
+
+
+
+
+
 
 

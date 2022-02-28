@@ -4,14 +4,20 @@ package com.ads.assignment1.dbaccess.entity;
 
 import java.sql.Timestamp;
 
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
+
+import com.ads.assignment1.dbaccess.Pojos.UserSearchHistory;
+import com.ads.assignment1.dbaccess.Pojos.UserStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,12 +27,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@SqlResultSetMapping(
+	    name = "UserStatusRes", classes = {
+	        @ConstructorResult(targetClass = UserStatus.class,
+	        columns = {
+	            @ColumnResult(name = "status", type = String.class),
+	            @ColumnResult(name = "message", type = String.class)
+	        }
+	        )
+	    }
+	)
 @NamedStoredProcedureQueries({
-	@NamedStoredProcedureQuery(name = "myapp.InsertUser", procedureName = "myapp.InsertUser",
+	@NamedStoredProcedureQuery(name = "myapp.InsertUser", procedureName = "myapp.InsertUser", resultSetMappings = {"UserStatusRes"},
 			parameters = {
-			    @StoredProcedureParameter(mode = ParameterMode.IN, name="userUniqueId", type = String.class),
-			    @StoredProcedureParameter(mode = ParameterMode.IN, name="userCreatedAt", type = String.class),
-			    @StoredProcedureParameter(mode = ParameterMode.OUT, name="insertuser", type = boolean.class)
+			    @StoredProcedureParameter(mode = ParameterMode.IN, name="unique_id", type = String.class),
+			    @StoredProcedureParameter(mode = ParameterMode.IN, name="modified_at", type = String.class),
+			    //@StoredProcedureParameter(mode = ParameterMode.OUT, name="insertuser", type = String.class)
 			})
 })
 

@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ads.assignment1.dbaccess.Pojos.UserInsertSearchRecord;
 import com.ads.assignment1.dbaccess.Pojos.UserSearchHistory;
+import com.ads.assignment1.dbaccess.Pojos.UserStatus;
 import com.ads.assignment1.dbaccess.entity.Place;
 import com.ads.assignment1.dbaccess.entity.SearchHistory;
 import com.ads.assignment1.dbaccess.entity.User;
+import com.ads.assignment1.dbaccess.service.RestService;
 import com.ads.assignment1.dbaccess.service.UserService;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
@@ -18,11 +20,17 @@ public class UserController {
 
     @Autowired
     private UserService service;
+    @Autowired
+    private RestService restService;
+    
+    public boolean return_status;
     
     // Add new user details to user_master table 
     @PostMapping("addUser")
-    public boolean InsertUserDetails(@RequestBody User objUser ){
-        return service.InsertUserDetails(objUser.getUser_unique_id(), objUser.getModified_at());
+    public List<UserStatus> InsertUserDetails(@RequestBody User objUser ){
+    	
+        //return service.InsertUserDetails(objUser.getUser_unique_id(), objUser.getModified_at());
+    	return service.InsertUser(objUser.getUser_unique_id(), objUser.getModified_at());
     }
     
     // Get all the user list
@@ -45,9 +53,22 @@ public class UserController {
 	
 	// Add new history searched record by user to history_master
     @PostMapping("addUserSearchRecord")
+    public List<UserStatus> InsertUserDetails(@RequestBody UserInsertSearchRecord obj ){
+    	return service.InsertUserSearchRecord(obj);
+    }
+    /*
+    @PostMapping("addUserSearchRecord")
     public boolean InsertUserDetails(@RequestBody UserInsertSearchRecord obj ){
     	return service.InsertUserSearchRecord(obj);
     }
+    */
+    
+    @GetMapping("getUserSearchHistory")
+	public void getUserUniqueID(@RequestParam String sessionId)
+	{
+		String output = restService.createPost(sessionId);
+		System.out.println(output);
+	}
    /*
     // Normal Array String
      
@@ -67,7 +88,7 @@ public class UserController {
     */
 	
     // Get history searched record by user
-	@PostMapping("getUserSearchHistory")
+	@PostMapping("getUserSearchHistory1")
 	public List<UserSearchHistory> getUserHistory(@RequestBody User objUser  ){
 		return service.getUserSearchHistory(objUser.getUser_unique_id());
     }
