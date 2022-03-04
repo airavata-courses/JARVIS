@@ -73,9 +73,9 @@ public class UserService {
     
     @Transactional(readOnly = false)
     public List<UserStatus> InsertUserSearchRecord(UserInsertSearchRecord obj ){
-    	String userUniqueId = getUserUniqueID( obj.getSession_id());
+    	//String userUniqueId = getUserUniqueID( obj.getSession_id());
     	StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("myapp.InsertUserSearchRecord");
-		spq.setParameter("unique_id", userUniqueId);
+		spq.setParameter("unique_id", obj.getUser_unique_id());
 		spq.setParameter("place_name", obj.getPlace_name());
 		spq.setParameter("data_link", obj.getData_link());
 		spq.setParameter("searched_time", obj.getSearched_time());
@@ -97,9 +97,7 @@ public class UserService {
 		return historyRepository.ProcGetUserSearchHistory(userUniqueId);
     }
 	
-    
-    
-	// Display user history details 
+    // Display user history details 
 	@Transactional(readOnly = true)
 	public List<UserSearchHistory> getUserSearchHistory(String sessionId){
 		String userUniqueId = getUserUniqueID( sessionId);
@@ -110,9 +108,9 @@ public class UserService {
 	}
 	
 	@Transactional(readOnly = false)
-	public List<UserStatus> InsertUser(String sessionId, String modified_at) {
+	public List<UserStatus> InsertUser(String userUniqueId, String modified_at) {
 		
-		String userUniqueId = getUserUniqueID( sessionId);
+		//String userUniqueId = getUserUniqueID( sessionId);
 		StoredProcedureQuery spq = em.createNamedStoredProcedureQuery("myapp.InsertUser");
 		spq.setParameter("unique_id", userUniqueId);
 		spq.setParameter("modified_at", modified_at);
@@ -126,9 +124,9 @@ public class UserService {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		// Deploy
-		String url = "http://auth_server:80/login_auth/verify_token";
+		//String url = "http://auth_server:80/login_auth/verify_token";
 		// Local Debug
-		//String url = "http://localhost:9000/login_auth/verify_token";
+		String url = "http://localhost:9000/login_auth/verify_token";
 		
 		System.out.println( session_id);
         // create headers

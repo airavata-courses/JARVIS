@@ -11,5 +11,5 @@ WORKDIR /build
 COPY pom.xml /build
 #Download all required dependencies into one layer
 RUN mvn dependency:resolve && mvn clean && mvn compile && mvn install
-EXPOSE 8080
+EXPOSE 8088
 CMD ["java", "-jar","./target/dbaccess-0.0.1-SNAPSHOT.jar"]

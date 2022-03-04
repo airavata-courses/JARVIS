@@ -27,36 +27,38 @@ public class UserController {
     
     public boolean return_status;
     
-    
+    /* for debug purpose
     // Get all the user list
     @GetMapping("/getAllUsers")
     public List<User> findAllUsers() {
         return service.getUsers();
     }
-    
+
+        // Get all the history list
+	@GetMapping("getHistory")
+	public List<SearchHistory> getHistory(){
+		return service.getHistory();
+	}
+
+    */
     // Get all the place list
     @GetMapping("/locations")
     public List<Place> getLocations() {
         return service.getLocations();
     }
     
-    // Get all the history list
-	@GetMapping("getHistory")
-	public List<SearchHistory> getHistory(){
-		return service.getHistory();
-	}
-	
 	// Add new user details to user_master table 
     @PostMapping("addUser")
-    public List<UserStatus> InsertUserDetails(@RequestBody User objUser ){
+    public List<UserStatus> InsertUser(@RequestBody User objUser ){
     	
         //return service.InsertUserDetails(objUser.getUser_unique_id(), objUser.getModified_at());
-    	return service.InsertUser(objUser.getSession_id(), objUser.getModified_at());
+    	//return service.InsertUser(objUser.getSession_id(), objUser.getModified_at());
+    	return service.InsertUser(objUser.getUser_unique_id(), objUser.getModified_at());
     }
     
     // Add new history searched record by user to history_master
     @PostMapping("addUserSearchRecord")
-    public List<UserStatus> InsertUserDetails(@RequestBody UserInsertSearchRecord obj ){
+    public List<UserStatus> InsertUserSearchRecord(@RequestBody UserInsertSearchRecord obj ){
     	System.out.println( "Function called ");
     	return service.InsertUserSearchRecord(obj);
     }
