@@ -25,12 +25,12 @@
 
 ## Build
 Just run make
-> make
+> make local
 
 Head to a web browser and go to http://localhost to access the application
 
 To cleanup
-> make cleanup
+> make cleanup_local
 ## Functionality
 - Open Web browser and launch http://localhost
 - Click on Sign in button, you'll be navigated to login page to enter your credentials

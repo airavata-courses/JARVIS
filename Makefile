@@ -6,7 +6,7 @@ microservices := staticwebserver mongodb authserver dbapp postgresdb s3getserver
 branches := a2-static-server-dev a2-authserver-dev a2-webserver-DBAccess-dev a2-s3data-dev a2-cache-dev a2-api-gateway-dev
 
 all:
-	echo "Options: kubernetes, checkout_code"
+	echo "Options: kubernetes, local"
 
 kubernetes: checkout_code build_docker_images deploy_kubernetes
 	echo "Building to deploy to kubernetes"
@@ -22,7 +22,7 @@ checkout_code:
 	done
 
 create_softlinks:
-	-ln -s $$(pwd)/build/a1-static-server-dev/www/html/assets/img build/a1-s3data-dev/imgdump
+	-ln -s $$(pwd)/build/a2-static-server-dev/www/html/assets/img build/a2-s3data-dev/imgdump
 
 build_docker_images:
 	echo "Building docker images"
