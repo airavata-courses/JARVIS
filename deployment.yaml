@@ -19,6 +19,14 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: imgs
+          mountPath: /opt/img
+      volumes:
+      - name: imgs
+        persistentVolumeClaim:
+          claimName: reflex-imgs
+
 
 ---
 apiVersion: v1
