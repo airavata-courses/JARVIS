@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
     <html>
         <head>
             <title>Weather Forecast</title>
@@ -54,7 +54,7 @@
 
                 
                 <!-- </form> -->
-                <p><img id="if1" src="/assets/img/test.png" alt="HTML5 Icon" width="1020" height="600"></p>
+                <p id="output"><img id="if1" src="/assets/img/test.png" alt="HTML5 Icon" width="1020" height="600"></p>
                 <div class="loading" id ="loading">Loading&#8230;</div>
             </body>
                 <script>
@@ -72,9 +72,18 @@
                                                        dataType: 'json',
                                                        contentType: 'application/json',
                                                        success: function (data) {
-                                                                               console.log(data);
-                                                                               document.getElementById("loading").style.display = "none";
-                                                                               document.getElementById("if1").src="/assets/img/"+data.img_url+".png";
+                                                                                console.log(data);
+                                                                                document.getElementById("loading").style.display = "none";
+                                                                                if(data.status == "success")
+                                                                                {
+                                                                                    document.getElementById("if1").src="/assets/img/"+data.img_url+".png";
+                                                                                }
+                                                                                if(data.status == "error")
+                                                                                {
+                                                                                    const node = document.createTextNode(data.message);
+                                                                                    const element = document.getElementById("output");
+                                                                                    element.appendChild(node);
+                                                                                }
                                                                            },
                                                        data: JSON.stringify(data_my)
                                                    });
