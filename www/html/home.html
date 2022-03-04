@@ -80,9 +80,7 @@
                                                                                 }
                                                                                 if(data.status == "error")
                                                                                 {
-                                                                                    const node = document.createTextNode(data.message);
-                                                                                    const element = document.getElementById("output");
-                                                                                    element.appendChild(node);
+                                                                                    alert(data.message);
                                                                                 }
                                                                            },
                                                        data: JSON.stringify(data_my)
