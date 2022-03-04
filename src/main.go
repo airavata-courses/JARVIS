@@ -9,8 +9,8 @@ import(
     "github.com/gorilla/mux"
 )
 
-var authserv string = "http://auth_server"+"/login_auth/verify_token"
-var s3serv string = "http://s3get_server"+"/api/nexraddata"
+var authserv string = "http://authserver"+"/login_auth/verify_token"
+var s3serv string = "http://s3getserver"+"/api/nexraddata"
 var dbserv string = "http://dbapp"+"/addUserSearchRecord"
 
 
@@ -19,7 +19,7 @@ type AuthservReq struct{
 }
 
 type AuthservResp struct{
-    Status string `json:"STATUS"`
+    Status string `json:"status"`
     DD *DecodedData `json:"DECODED_DATA"`
 }
 
@@ -49,10 +49,14 @@ func authUser(sess_id string, resp *AuthservResp) int{
         log.Println(err)
         return -1;
     }
+    if resp.Status == "error" {
+        return -1;
+    }
     return 0;
 }
 
 type S3Resp struct{
+    Status string `json:"status"`
     ImgUrl string `json:"img_url"`
 }
 func reqS3(req WeatherReq, resp *S3Resp) int{
@@ -69,6 +73,9 @@ func reqS3(req WeatherReq, resp *S3Resp) int{
     err = json.NewDecoder(respbody.Body).Decode(resp)
     if err != nil {
         log.Println(err)
+        return -1;
+    }
+    if resp.Status == "error"{
         return -1;
     }
     return 0;
@@ -112,10 +119,12 @@ type WeatherReq struct {
 }
 
 type WeatherResp struct {
+    Status string `json:"status"`
     ImgUrl string `json:"img_url"`
 }
 
 type WeatherErrResp struct {
+    Status string `json:"status"`
     ErrMsg string `json:"err_msg"`
 }
 
@@ -130,6 +139,7 @@ func getWeather(w http.ResponseWriter, r *http.Request){
     _ = json.NewDecoder(r.Body).Decode(&wetreq)
 
     fmt.Println("Received request", wetreq)
+    errresp.Status = "error"
 
     // Authenticate the user
     var auth AuthservResp
@@ -166,6 +176,7 @@ func getWeather(w http.ResponseWriter, r *http.Request){
     }
 
     // send response
+    resp.Status = "success"
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(resp)
 
@@ -207,5 +218,3 @@ func main(){
     log.Fatal(http.ListenAndServe(":80", r))
 
 }
-
-
