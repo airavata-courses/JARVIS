@@ -70,6 +70,9 @@ def get_for_single_timestamp(station, date_time):
 
         catalog = rs.get_catalog(query)
 
+        if len(catalog.datasets) == 0:
+            return jsonify({"status": "error", "message": "No data found for given date-time stamp"})
+
         data = catalog.datasets[0].remote_access()
 
         sweep = 0
