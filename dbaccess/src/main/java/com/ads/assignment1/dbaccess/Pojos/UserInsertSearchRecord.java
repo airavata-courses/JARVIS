@@ -2,18 +2,20 @@ package com.ads.assignment1.dbaccess.Pojos;
 //Class is used to searched result set mapping 
 public class UserInsertSearchRecord {
 
+	private String user_unique_id;
 	private String place_name;
 	private String data_link;
 	private String searched_time;
-	private String user_unique_id;
 	private String location_searched_at;
+	private String session_id;
 	
-	public UserInsertSearchRecord(String place_name, String data_link, String searched_time, String user_unique_id, String location_searched_at) {
+	public UserInsertSearchRecord(String user_unique_id,String place_name, String data_link, String searched_time , String location_searched_at, String session_id) {
+		this.user_unique_id = user_unique_id;
 		this.place_name = place_name;
 		this.data_link = data_link;
 		this.searched_time = searched_time;
-		this.user_unique_id = user_unique_id;
 		this.location_searched_at=location_searched_at;
+		this.session_id = session_id;
 	}
 	// Setter and getter of each column
 	public String getPlace_name() {
@@ -54,5 +56,11 @@ public class UserInsertSearchRecord {
 
 	public void setUser_unique_id(String user_unique_id) {
 		this.user_unique_id = user_unique_id;
+	}
+	public String getSession_id() {
+		return session_id;
+	}
+	public void setSession_id(String session_id) {
+		this.session_id = session_id;
 	}
 }

@@ -23,6 +23,8 @@ public class DbaccessApplication {
 		//SpringApplication.run(DbaccessApplication.class, args);
 		SpringApplication app = new SpringApplication(DbaccessApplication.class);
 		app.setDefaultProperties(Collections.singletonMap("server.port", "80"));
+		// Local Debug
+		//app.setDefaultProperties(Collections.singletonMap("server.port", "8088"));
 		app.run(args);
 	}
 

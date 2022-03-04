@@ -16,6 +16,11 @@ public class UserSearchHistory {
 		this.searched_time = searched_time;
 		this.location_searched_at = location_searched_at;
 	}
+	
+	public UserSearchHistory()
+	{
+		
+	}
 	// Setter and getter of each column
 	public String getPlace_name() {
 		return place_name;
