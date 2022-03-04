@@ -65,7 +65,7 @@ try{
     console.log("opx : ",opx)
     if(opx == null){
         res.json({"status": "error","message": "User Not Found"})
-    }
+    } else {
     console.log("opx.PASSWORD : ",opx.PASSWORD)
     var b = crypto.AES.decrypt(opx.PASSWORD,key);
     console.log("b : ",b);
@@ -90,6 +90,7 @@ try{
     }else{
         res.json({"status":"error","message" : "Error Logging In"})
     }
+}
 }catch(err){
     res.send("Error")
 }
