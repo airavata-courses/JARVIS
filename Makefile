@@ -1,4 +1,5 @@
 all: images
+	docker run -d --net=skynet --rm --name mongodb mongo
 	docker run -d --net=skynet --rm --name authserver authserver
 
 images:
