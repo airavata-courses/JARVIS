@@ -90,10 +90,10 @@ def get_for_single_timestamp(station, date_time):
         s = station + '_' + date_time
 
         fig.savefig("/opt/img/"+s)
-        return jsonify({"img_url": s})
+        return jsonify({"img_url": s, "status":"success"})
 
     else:
-        return jsonify({"err":"No data found for given time stamp"})
+        return jsonify({"status":"error","message":"No data found for given date-time stamp"})
 
 
 def new_map(fig, lon, lat):
@@ -115,4 +115,3 @@ api.add_resource(NexradData, '/api/nexraddata')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port="80")
-
