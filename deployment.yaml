@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staticwebserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: staticwebserver
+  template:
+    metadata:
+      labels:
+        app: staticwebserver
+    spec:
+      containers:
+      - name: staticwebserver
+        image: staticwebserver
+        # This will make sure that the local image is used
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: staticwebserver
+spec:
+  # This is for local testing this will expose
+  # service on a NAT'ed port
+  # type: NodePort
+  ports:
+  - name: staticwebserverports
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    app: staticwebserver
+
+
