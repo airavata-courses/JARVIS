@@ -125,7 +125,7 @@ type WeatherResp struct {
 
 type WeatherErrResp struct {
     Status string `json:"status"`
-    ErrMsg string `json:"err_msg"`
+    ErrMsg string `json:"message"`
 }
 
 func getWeather(w http.ResponseWriter, r *http.Request){
