@@ -6,8 +6,8 @@ services:
     ports:
       - 8088:8088
     depends_on:
-      - postgres_db
-  postgres_db:
+      - postgresdb
+  postgresdb:
     image: "postgres:11.4"
     restart: always
     environment:
