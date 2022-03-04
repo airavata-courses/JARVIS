@@ -23,7 +23,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 const { MongoClient } = require('mongodb');
 
 // Connection URL
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://mongodb:27017/';
 const client = new MongoClient(url);
 
 // Database Name
@@ -115,7 +115,7 @@ app.post('/login_auth/verify_token',jsonParser, async function(req,res){
             res.json({"status":"error","message":"error in session id"})
         }
     }catch(err){
-        res.send("Error")
+        res.send({"status":"error","message":"error in session id"})
     }
 })
 
