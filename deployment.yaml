@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s3getserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: s3getserver
+  template:
+    metadata:
+      labels:
+        app: s3getserver
+    spec:
+      containers:
+      - name: s3getserver
+        image: s3getserver
+        # This will make sure that the local image is used
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: s3getserver
+spec:
+  # This is for local testing this will expose
+  # service on a NAT'ed port
+  # type: NodePort
+  ports:
+  - name: s3getserverports
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    app: s3getserver
+
+
