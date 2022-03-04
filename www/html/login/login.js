@@ -168,10 +168,18 @@ $(function() {
             {"user" : uname,
             "pass": pass},
             function (data){
-                console.log("Got session id " + data.session_id);
-                setCookie("session_id", data.session_id);
-                setCookie("USER_UNIQUE_ID", data.USER_UNIQUE_ID);
-                window.location.href = "/home.html";
+               if ( data.status == "success"){
+                  console.log("Got session id " + data.session_id);
+                  setCookie("session_id", data.session_id);
+                  setCookie("USER_UNIQUE_ID", data.USER_UNIQUE_ID);
+                  window.location.href = "/home.html";
+               }
+               else{
+                  const node = document.createTextNode(data.message);
+                  const element = document.getElementById("fields");
+                  element.appendChild(node);
+               }
+                
             },
             "json").fail(function(){
                 delCookie("user");
