@@ -1,4 +1,6 @@
-all:
+all: images
+	docker run -d --net=skynet --rm --name authserver authserver
+
+images:
 	echo "Building docker for Auth server"
-	docker build -t auth_server .
-	docker run -d --net=skynet --rm --name auth_server auth_server
+	docker build -t authserver .
