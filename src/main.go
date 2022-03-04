@@ -179,10 +179,12 @@ func getWeather(w http.ResponseWriter, r *http.Request){
     resp.Status = "success"
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(resp)
+    return
 
     fail:
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(errresp)
+    return
 }
 
 type ImDb struct {
