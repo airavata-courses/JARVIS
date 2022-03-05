@@ -124,7 +124,7 @@ public class UserService {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		// Deploy
-		String url = "http://auth_server:80/login_auth/verify_token";
+		String url = "http://authserver/login_auth/verify_token";
 		// Local Debug
 		//String url = "http://localhost:9000/login_auth/verify_token";
 		
