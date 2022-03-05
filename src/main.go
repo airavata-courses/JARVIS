@@ -7,6 +7,7 @@ import(
     "log"
     "net/http"
     "github.com/gorilla/mux"
+    "time"
 )
 
 var authserv string = "http://authserver"+"/login_auth/verify_token"
@@ -95,7 +96,7 @@ func recordUserAction(wreq WeatherReq, uid string, imgurl string) int{
     req.Location = wreq.Location
     req.UserId = uid
     req.ImgUrl = imgurl
-    req.LocationSearchedAt = wreq.Datetime
+    req.LocationSearchedAt = time.Now().String()
 
     fmt.Println("Adding user record")
     fmt.Println(req)
