@@ -124,9 +124,9 @@ public class UserService {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		// Deploy
-		//String url = "http://auth_server:80/login_auth/verify_token";
+		String url = "http://auth_server:80/login_auth/verify_token";
 		// Local Debug
-		String url = "http://localhost:9000/login_auth/verify_token";
+		//String url = "http://localhost:9000/login_auth/verify_token";
 		
 		System.out.println( session_id);
         // create headers
@@ -154,11 +154,11 @@ public class UserService {
 		
 		JSONObject obj = new JSONObject(authenticateUser(session_id));
 		
-		System.out.println(obj.getString("STATUS"));
-		if( obj.getString("STATUS").equals("TOKEN VERIFIED") )
+		System.out.println(obj.getString("status"));
+		if( obj.getString("status").equals("success") )
 			return obj.getJSONObject("DECODED_DATA").getString("UNIQUE_USER_ID");
 		else
-			return null;
+			return "Error in session id";
 	}
 
 	
