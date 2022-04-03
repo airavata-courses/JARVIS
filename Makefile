@@ -1,5 +1,5 @@
 netname := skynet
-reponame := git@github.com:airavata-courses/JARVIS.git
+reponame := https://github.com/airavata-courses/JARVIS.git
 microservices := staticwebserver mongodb authserver dbapp postgresdb s3getserver cacheserver apigateway
 # branches := a2-static-server a2-authserver a2-webserver-DBAccess a2-s3data a2-cache a2-api-gateway
 # For dev test
