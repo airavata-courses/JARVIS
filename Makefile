@@ -1,14 +1,17 @@
 netname := skynet
 reponame := https://github.com/airavata-courses/JARVIS.git
 microservices := staticwebserver mongodb authserver dbapp postgresdb s3getserver cacheserver apigateway
+statelessmicroservices := staticwebserver authserver dbapp s3getserver cacheserver apigateway
+registry := jarvis-master:32000
 # branches := a2-static-server a2-authserver a2-webserver-DBAccess a2-s3data a2-cache a2-api-gateway
 # For dev test
 branches := a2-static-server-dev a2-authserver-dev a2-webserver-DBAccess-dev a2-s3data-dev a2-cache-dev a2-api-gateway-dev
+deployments := api-gateway-deployment.yml cache-deployment.yml s3data-deployment.yml authserver-deployment.yml dbaccess-deployment.yml static-server-deployment.yml 
 
 all:
 	echo "Options: kubernetes, local"
 
-kubernetes: checkout_code build_docker_images deploy_kubernetes
+kubernetes: checkout_code build_docker_images push_docker_images deploy_kubernetes
 	echo "Building to deploy to kubernetes"
 
 local: checkout_code create_softlinks build_dockers
@@ -30,10 +33,17 @@ build_docker_images:
 		make -C build/$${branch} images;\
 	done
 
+push_docker_images:
+	echo "ReTagging docker images and pushing to registry"
+	-for microservice in ${statelessmicroservices} ; do \
+		docker tag $${microservice} ${registry}/$${microservice};\
+		docker push ${registry}/$${microservice};\
+	done
+
 deploy_kubernetes:
 	echo "Deploying images to kubernetes"
-	-for branch in ${branches} ; do \
-		kubectl apply -f build/$${branch}/deployment.yaml ;\
+	-for deployment in ${deployments} ; do \
+		kubectl apply -f deployments/$${deployment} ;\
 	done
 
 build_dockers:
@@ -51,8 +61,8 @@ cleanup_kube: delete_deployments rm_images
 	echo "Cleaning up kubernetes deployments"
 
 delete_deployments:
-	-for branch in ${branches} ; do \
-		kubectl delete -f build/$${branch}/deployment.yaml ;\
+	-for deployment in ${deployments} ; do \
+		kubectl delete -f deployments/$${deployment} ;\
 	done
 
 cleanup_local: rm_containers rm_images

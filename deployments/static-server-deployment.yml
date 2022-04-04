@@ -1,0 +1,79 @@
+# Define persistent volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: imgdump
+spec:
+  # local storage
+  storageClassName: hostpath
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+
+---
+# Define a claim to that storage this
+# is used in the containers
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: reflex-imgs
+spec:
+  storageClassName: hostpath
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+# Static webserver
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staticwebserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: staticwebserver
+  template:
+    metadata:
+      labels:
+        app: staticwebserver
+    spec:
+      containers:
+      - name: staticwebserver
+        image: jarvis-master:32000/staticwebserver
+        # This will make sure that the local image is used
+        # imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: imgs
+          mountPath: /var/www/html/assets/img
+      volumes:
+      - name: imgs
+        persistentVolumeClaim:
+          claimName: reflex-imgs
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: staticwebserver
+spec:
+  # This is for local testing this will expose
+  # service on a NAT'ed port
+  # type: NodePort
+  ports:
+  - name: staticwebserverports
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    app: staticwebserver
+
+
