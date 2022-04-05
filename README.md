@@ -40,3 +40,4 @@ To cleanup
 - A map with reflexivity plot is generated.
 - On homepage you can view user history by clicking on history button which navigates you to history page.
 - On homepage you can logout by clicking on logout button which navigates you to index page.
+- Checking for CD
