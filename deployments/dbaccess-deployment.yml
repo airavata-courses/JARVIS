@@ -15,9 +15,9 @@ spec:
     spec:
       containers:
       - name: postgresdb
-        image: postgresdb
+        image: jarvis-master:32000/postgresdb
         # This will make sure that the local image is used
-        imagePullPolicy: Never
+        # imagePullPolicy: Never
         ports:
         - containerPort: 5432
 

@@ -1,7 +1,7 @@
 netname := skynet
 reponame := https://github.com/airavata-courses/JARVIS.git
 microservices := staticwebserver mongodb authserver dbapp postgresdb s3getserver cacheserver apigateway
-statelessmicroservices := staticwebserver authserver dbapp s3getserver cacheserver apigateway
+statelessmicroservices := staticwebserver authserver dbapp postgresdb s3getserver cacheserver apigateway
 registry := jarvis-master:32000
 # branches := a2-static-server a2-authserver a2-webserver-DBAccess a2-s3data a2-cache a2-api-gateway
 # For dev test
@@ -36,8 +36,8 @@ build_docker_images:
 push_docker_images:
 	echo "ReTagging docker images and pushing to registry"
 	-for microservice in ${statelessmicroservices} ; do \
-		docker tag $${microservice} ${registry}/$${microservice};\
-		docker push ${registry}/$${microservice};\
+		docker tag $${microservice} ${registry}/$${microservice}${IMG_TAG};\
+		docker push ${registry}/$${microservice}${IMG_TAG};\
 	done
 
 deploy_kubernetes:
