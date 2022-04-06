@@ -49,7 +49,7 @@ deploy_kubernetes:
 rollout_update:
 	echo "Rolling out update with images tagged ${IMG_TAG}"
 	-for microservice in ${statelessmicroservices} ; do \
-		kubectl set image deploy/$${microservice} $${microservice}=${registry}/$${staticwebserver}${IMG_TAG} --record;\
+		kubectl set image deploy/$${microservice} $${microservice}=${registry}/$${microservice}${IMG_TAG} --record;\
 	done
 
 build_dockers:
