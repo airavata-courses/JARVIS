@@ -75,6 +75,9 @@ rm_containers:
 	done
 
 rm_images:
+	-for microservice in ${statelessmicroservices} ; do \
+		docker image rm ${registry}/$${microservice}${IMG_TAG};\
+	done
 	-for mserv in ${microservices}; do\
 		docker image rm $${mserv};\
 	done
