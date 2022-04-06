@@ -3,6 +3,11 @@ kind: Deployment
 metadata:
   name: s3getserver
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 1
   replicas: 3
   selector:
     matchLabels:
@@ -15,8 +20,7 @@ spec:
       containers:
       - name: s3getserver
         image: jarvis-master:32000/s3getserver
-        # This will make sure that the local image is used
-        # imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         volumeMounts:
@@ -34,9 +38,6 @@ kind: Service
 metadata:
   name: s3getserver
 spec:
-  # This is for local testing this will expose
-  # service on a NAT'ed port
-  # type: NodePort
   ports:
   - name: s3getserverports
     protocol: TCP
@@ -44,5 +45,3 @@ spec:
     targetPort: 80
   selector:
     app: s3getserver
-
-

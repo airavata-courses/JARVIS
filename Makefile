@@ -46,6 +46,12 @@ deploy_kubernetes:
 		kubectl apply -f deployments/$${deployment} ;\
 	done
 
+rollout_update:
+	echo "Rolling out update with images tagged ${IMG_TAG}"
+	-for microservice in ${statelessmicroservices} ; do \
+		kubectl set image deploy/$${microservice} $${microservice}=${registry}/$${staticwebserver}${IMG_TAG} --record;\
+	done
+
 build_dockers:
 	echo "Creating docker network"
 	-docker network create ${netname};

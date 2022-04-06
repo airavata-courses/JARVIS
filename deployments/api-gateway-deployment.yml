@@ -3,6 +3,11 @@ kind: Deployment
 metadata:
   name: apigateway
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: apigateway
@@ -14,8 +19,7 @@ spec:
       containers:
       - name: apigateway
         image: jarvis-master:32000/apigateway
-        # This will make sure that the local image is used
-        # imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
       nodeSelector:
@@ -27,8 +31,6 @@ kind: Service
 metadata:
   name: apigateway
 spec:
-  # This is for local testing this will expose
-  # service on a NAT'ed port
   type: NodePort
   ports:
   - name: apigatewayports

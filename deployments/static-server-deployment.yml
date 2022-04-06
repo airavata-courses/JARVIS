@@ -35,6 +35,11 @@ kind: Deployment
 metadata:
   name: staticwebserver
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 1
   replicas: 3
   selector:
     matchLabels:
@@ -47,8 +52,7 @@ spec:
       containers:
       - name: staticwebserver
         image: jarvis-master:32000/staticwebserver
-        # This will make sure that the local image is used
-        # imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         volumeMounts:
@@ -65,9 +69,6 @@ kind: Service
 metadata:
   name: staticwebserver
 spec:
-  # This is for local testing this will expose
-  # service on a NAT'ed port
-  # type: NodePort
   ports:
   - name: staticwebserverports
     protocol: TCP
@@ -75,5 +76,3 @@ spec:
     targetPort: 80
   selector:
     app: staticwebserver
-
-

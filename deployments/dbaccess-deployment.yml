@@ -16,6 +16,7 @@ spec:
       containers:
       - name: postgresdb
         image: jarvis-master:32000/postgresdb
+        imagePullPolicy: Always
         # This will make sure that the local image is used
         # imagePullPolicy: Never
         ports:
@@ -45,6 +46,11 @@ kind: Deployment
 metadata:
   name: dbapp
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 1
   replicas: 3
   selector:
     matchLabels:
@@ -57,8 +63,7 @@ spec:
       containers:
       - name: dbapp
         image: jarvis-master:32000/dbapp
-        # This will make sure that the local image is used
-        # imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
 
@@ -68,9 +73,6 @@ kind: Service
 metadata:
   name: dbapp
 spec:
-  # This is for local testing this will expose
-  # service on a NAT'ed port
-  # type: NodePort
   ports:
   - name: dbappports
     protocol: TCP
@@ -78,5 +80,3 @@ spec:
     targetPort: 80
   selector:
     app: dbapp
-
-

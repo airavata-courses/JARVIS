@@ -25,9 +25,6 @@ kind: Service
 metadata:
   name: mongodb
 spec:
-  # This is for local testing this will expose
-  # service on a NAT'ed port
-  # type: NodePort
   ports:
   - name: mongodbports
     protocol: TCP
@@ -43,6 +40,11 @@ kind: Deployment
 metadata:
   name: authserver
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 1
   replicas: 3
   selector:
     matchLabels:
@@ -55,8 +57,7 @@ spec:
       containers:
       - name: authserver
         image: jarvis-master:32000/authserver
-        # This will make sure that the local image is used
-        # imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
 
@@ -66,9 +67,6 @@ kind: Service
 metadata:
   name: authserver
 spec:
-  # This is for local testing this will expose
-  # service on a NAT'ed port
-  # type: NodePort
   ports:
   - name: authserverports
     protocol: TCP
@@ -76,5 +74,3 @@ spec:
     targetPort: 80
   selector:
     app: authserver
-
-
