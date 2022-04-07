@@ -1,11 +1,11 @@
 netname := skynet
 reponame := https://github.com/airavata-courses/JARVIS.git
-microservices := staticwebserver mongodb authserver dbapp postgresdb s3getserver cacheserver apigateway
-statelessmicroservices := staticwebserver authserver dbapp postgresdb s3getserver cacheserver apigateway
+microservices := staticwebserver mongodb authserver dbapp postgresdb s3getserver merragetserver cacheserver apigateway
+statelessmicroservices := staticwebserver authserver dbapp postgresdb s3getserver merragetserver cacheserver apigateway
 registry := jarvis-master:32000
 # branches := a2-static-server a2-authserver a2-webserver-DBAccess a2-s3data a2-cache a2-api-gateway
 # For dev test
-branches := a2-static-server-dev a2-authserver-dev a2-webserver-DBAccess-dev a2-s3data-dev a2-cache-dev a2-api-gateway-dev
+branches := a2-static-server-dev a2-authserver-dev a2-webserver-DBAccess-dev a2-s3data-dev a3-merra-dev a2-cache-dev a2-api-gateway-dev
 deployments := api-gateway-deployment.yml cache-deployment.yml s3data-deployment.yml authserver-deployment.yml dbaccess-deployment.yml static-server-deployment.yml 
 
 all:
