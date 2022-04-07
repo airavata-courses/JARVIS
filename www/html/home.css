@@ -2,9 +2,13 @@
     box-sizing: border-box;
   }
   
-  html,
-  body {
+  html { 
+    margin: 0;
     height: 100%;
+  }
+  body { 
+    margin: 0;
+    height: 100%; 
   }
   
   ::selection {
@@ -262,23 +266,14 @@
     width: 100%;
     z-index: 0;
   }
-  #if1 {
-    margin-left: 300px;
-    margin-bottom: 10px;
-  }
+
   #if2 {
-    margin-left: 300px;
-    margin-bottom: 10px;
     display: none;
   }
   #if3 {
-    margin-left: 300px;
-    margin-bottom: 10px;
     display: none;
   }
   #if4 {
-    margin-left: 300px;
-    margin-bottom: 10px;
     display: none;
   }
 
@@ -425,4 +420,14 @@
 #history{
   float: left;
   width: 15%;
+}
+div.scroll {
+  margin-left:250px;
+  padding:4px;
+  background-color: green;
+  width: 1080px;
+  height: 600px;
+  overflow-x: auto;
+  overflow-y: auto;
+  text-align:justify;
 }
