@@ -157,6 +157,7 @@ def plot_data(file, year, month):
     TO3 =  data.variables['TO3'][:,:,:]
     TO3 =  TO3[0,:,:]
     d={'COCL':COCL,'COEM':COEM,'COLS':COLS,'TO3':TO3}
+    d1={'COCL':"CO Column Burden",'COEM':"CO Emission",'COLS':"CO Chemical Loss",'TO3':"Total Column Ozone"}
     
     for i in ['COCL','COEM','COLS','TO3']:
         fig = plt.figure(figsize=(16,9))
@@ -165,7 +166,7 @@ def plot_data(file, year, month):
         ax.coastlines(resolution="110m",linewidth=1)
         ax.gridlines(linestyle='--',color='black')
         plt.contourf(lons, lats, d[i], transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
-        plt.title(f'MERRA-2 {i} levels, {year} {month}', size=16)
+        plt.title(f'MERRA-2 {i} {d1[i]} levels, {year} {month}', size=16)
         cb = plt.colorbar(ax=ax, orientation="vertical", pad=0.02, aspect=16, shrink=0.8)
         cb.set_label('Threshold',size=14,rotation=0,labelpad=15)
         cb.ax.tick_params(labelsize=12)
