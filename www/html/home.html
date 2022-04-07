@@ -17,7 +17,7 @@
                 <!-- <form method="GET" name="search" role="search"> -->
                 <div role="search" name="search" id="search">
                 
-                <p class="inp-wrap cat-wrap">
+                <p class="inp-wrap cat-wrap" id = "station_block">
                     <label for="station" class="grid-25">In</label>
                     <select name="search station" id="station" class="grid-80">
                     <option value="KIND" selected>Indianapolis</option>
@@ -30,6 +30,13 @@
                     <option value="KOKX">New York</option>
                     <option value="KAMX">Miami</option>
                     <option value="KRAX">Raleigh</option>
+                    </select>
+                </p>
+                <p class="inp-wrap cat-wrap">
+                    <label for="station" class="grid-25">In</label>
+                    <select name="search station" id="dataset" class="grid-80" onchange="dataChange()">
+                    <option value="Nexrad" selected>Nexrad</option>
+                    <option value="MERRA">MERRA</option>
                     </select>
                 </p>
 
@@ -55,18 +62,25 @@
                 
                 <!-- </form> -->
                 <p id="output"><img id="if1" src="/assets/test.png" alt="HTML5 Icon" width="1020" height="600"></p>
+                <p id="output"><img id="if2" src="" alt="HTML5 Icon" width="1020" height="600"></p>
+                <p id="output"><img id="if3" src="" alt="HTML5 Icon" width="1020" height="600"></p>
+                <p id="output"><img id="if4" src="" alt="HTML5 Icon" width="1020" height="600"></p>
                 <div class="loading" id ="loading">Loading&#8230;</div>
             </body>
                 <script>
                     function sendRequest(){
-                               const url = "/api/s3g/getweather";
+                               
                                const station = document.getElementById( "station" ).value;
                                const date_time = document.getElementById( "datetime-field" ).value;
-                               const data_my = {station:station,date_time:date_time,session_id:getCookie("session_id")};
+                               
+                               const dataset = document.getElementById( "dataset" ).value;
                         
                                document.getElementById("loading").style.display = "block";
 
-                               $.ajax({
+                               if(dataset=='Nexrad'){
+                                    const url = "/api/s3g/getweather";
+                                    const data_my = {station:station,date_time:date_time,session_id:getCookie("session_id")};
+                                    $.ajax({
                                                        url: url,
                                                        type: 'post',
                                                        dataType: 'json',
@@ -85,6 +99,38 @@
                                                                            },
                                                        data: JSON.stringify(data_my)
                                                    });
+                               }
+                               if(dataset=='MERRA'){
+                                    const url = "/api/merra/getweather";
+                                    const data_my = {date_time:date_time,session_id:getCookie("session_id")};
+                                    $.ajax({
+                                                       url: url,
+                                                       type: 'post',
+                                                       dataType: 'json',
+                                                       contentType: 'application/json',
+                                                       success: function (data) {
+                                                                                console.log(data);
+                                                                                document.getElementById("loading").style.display = "none";
+                                                                                if(data.status == "success")
+                                                                                {
+                                                                                    
+                                                                                    document.getElementById("if1").src="/assets/img/"+data.img_urls[0];
+                                                                                    document.getElementById("if2").src="/assets/img/"+data.img_urls[1];
+                                                                                    document.getElementById("if3").src="/assets/img/"+data.img_urls[2];
+                                                                                    document.getElementById("if4").src="/assets/img/"+data.img_urls[3];
+                                                                                    document.getElementById("if2").style.display = "block";
+                                                                                    document.getElementById("if3").style.display = "block";
+                                                                                    document.getElementById("if4").style.display = "block";
+                                                                                }
+                                                                                if(data.status == "error")
+                                                                                {
+                                                                                    alert(data.message);
+                                                                                }
+                                                                           },
+                                                       data: JSON.stringify(data_my)
+                                                   });
+                               }
+                               
                            }
                     function logout(){
                         sessionCleanup();
@@ -114,5 +160,17 @@
                         var maxDate = year + '-' + month + '-' + day + 'T'+ hours + ':' + min;    
                         $('#datetime-field').attr('max', maxDate);
                     });
+                    function dataChange(){
+                        const dataset = document.getElementById( "dataset" ).value;
+
+                        if(dataset=='MERRA'){
+                            document.getElementById("station_block").style.display = "none";
+                            document.getElementById("if1").src="/assets/"+"world_map.png";
+                        }
+                        if(dataset=='Nexrad'){
+                            document.getElementById("station_block").style.display = "block";
+                            document.getElementById("if1").src="/assets/"+"test.png";
+                        }
+                    }
                 </script>
     </html>
