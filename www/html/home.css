@@ -266,6 +266,21 @@
     margin-left: 300px;
     margin-bottom: 10px;
   }
+  #if2 {
+    margin-left: 300px;
+    margin-bottom: 10px;
+    display: none;
+  }
+  #if3 {
+    margin-left: 300px;
+    margin-bottom: 10px;
+    display: none;
+  }
+  #if4 {
+    margin-left: 300px;
+    margin-bottom: 10px;
+    display: none;
+  }
 
   /* Absolute Center Spinner */
 .loading {
