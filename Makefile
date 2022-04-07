@@ -3,5 +3,5 @@ all: images
 	docker run -d --net=skynet --rm --name authserver authserver
 
 images:
-	echo "Building docker for Auth server"
-	docker build -t authserver .
+	echo "Building docker for kafka sidecar"
+	docker build -t kafkasidecar .
