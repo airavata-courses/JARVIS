@@ -178,5 +178,4 @@ def plot_data(file, year, month):
 api.add_resource(MERRAData, '/api/merradata')
 
 if __name__ == '__main__':
-    app.run(port="3080")
-    #app.run(host="0.0.0.0", port="80")
+    app.run(host="0.0.0.0", port="80")
