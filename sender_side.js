@@ -1,4 +1,5 @@
 const Kafka = require('node-rdkafka');
+const express = require('express');
 const router = express.Router()
 const serveIndex = require('serve-index');
 const jwt = require('jsonwebtoken');
@@ -51,8 +52,10 @@ function queueMessage(message) {
 
 app.post('/login_auth/verify_token',jsonParser, async function(req,res){
     try{
-        var x = req.body
-        queueMessage(x)
+        var x = req.body;
+
+        queueMessage(x);
+
 
         const consumer = Kafka.KafkaConsumer({
             'group.id': 'kafka1',
@@ -60,10 +63,13 @@ app.post('/login_auth/verify_token',jsonParser, async function(req,res){
         },{});
 
         consumer.connect();
+        console.log("consumer connected");
 
         consumer.on('ready',() => {
             consumer.subscribe(['m2']);
+            console.log("consumer subscribed");
             consumer.consume();
+            console.log("consumer consuming");
         }).on('data', function(data)  {
             x = data.value
             y = x.toString()
