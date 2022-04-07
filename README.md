@@ -1,1 +1,1 @@
-# S3 Data retrieval and conversion
+# MERRA Data retrieval and conversion
