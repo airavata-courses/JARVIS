@@ -7,6 +7,6 @@ RUN conda install -c conda-forge flask-restful
 RUN conda install -c conda-forge numpy
 RUN conda install -c conda-forge metpy
 RUN conda install -c conda-forge netcdf4
-COPY ./getNexradData.py ./
+COPY ./getMerraData.py ./
 
 CMD ["python", "getMerraData.py"]
