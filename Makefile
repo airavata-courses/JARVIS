@@ -6,7 +6,15 @@ registry := jarvis-master:32000
 # branches := a2-static-server a2-authserver a2-webserver-DBAccess a2-s3data a2-cache a2-api-gateway
 # For dev test
 branches := a2-static-server-dev a2-authserver-dev a2-webserver-DBAccess-dev a2-s3data-dev a3-merra-dev a2-cache-dev a2-api-gateway-dev
-deployments := api-gateway-deployment.yml cache-deployment.yml s3data-deployment.yml authserver-deployment.yml dbaccess-deployment.yml static-server-deployment.yml 
+
+deployments := api-gateway-deployment.yml \
+	       cache-deployment.yml \
+	       s3data-deployment.yml \
+	       meera-deployment.yml \
+	       authserver-deployment.yml \
+	       dbaccess-deployment.yml \
+	       static-server-deployment.yml \
+	       kafka-deployment.yml
 
 all:
 	echo "Options: kubernetes, local"
@@ -26,7 +34,7 @@ checkout_code:
 
 create_softlinks:
 	-ln -s $$(pwd)/build/a2-static-server-dev/www/html/assets/img build/a2-s3data-dev/imgdump
-	-ln -s $$(pwd)/build/a2-static-server-dev/www/html/assets/img build/a3-meera-dev/imgdump
+	-ln -s $$(pwd)/build/a2-static-server-dev/www/html/assets/img build/a3-merra-dev/imgdump
 
 build_docker_images:
 	echo "Building docker images"
