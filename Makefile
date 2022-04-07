@@ -26,6 +26,7 @@ checkout_code:
 
 create_softlinks:
 	-ln -s $$(pwd)/build/a2-static-server-dev/www/html/assets/img build/a2-s3data-dev/imgdump
+	-ln -s $$(pwd)/build/a2-static-server-dev/www/html/assets/img build/a3-meera-dev/imgdump
 
 build_docker_images:
 	echo "Building docker images"

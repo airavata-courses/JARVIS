@@ -1,39 +1,47 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cacheserver
+  name: merragetserver
 spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 3
       maxUnavailable: 1
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: cacheserver
+      app: merragetserver
   template:
     metadata:
       labels:
-        app: cacheserver
+        app: merragetserver
     spec:
       containers:
-      - name: cacheserver
-        image: jarvis-master:32000/cacheserver
+      - name: merragetserver
+        image: jarvis-master:32000/merragetserver
         imagePullPolicy: Always
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: imgs
+          mountPath: /opt/img
+      volumes:
+      - name: imgs
+        persistentVolumeClaim:
+          claimName: reflex-imgs
+
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cacheserver
+  name: merragetserver
 spec:
   ports:
-  - name: cacheserverports
+  - name: merragetserverports
     protocol: TCP
     port: 80
     targetPort: 80
   selector:
-    app: cacheserver
+    app: merragetserver
