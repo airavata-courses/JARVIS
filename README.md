@@ -17,4 +17,4 @@
 * Parameterized Trigger Plugin
 * Git Integration Plugin
 ### Architecture:
-image
+![image](https://user-images.githubusercontent.com/89654540/162112653-1a55191a-a83b-4555-b8a4-50f3a65927bb.png)
