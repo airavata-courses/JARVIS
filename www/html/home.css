@@ -276,6 +276,9 @@
   #if4 {
     display: none;
   }
+  #if5 {
+    display: none;
+  }
 
   /* Absolute Center Spinner */
 .loading {
