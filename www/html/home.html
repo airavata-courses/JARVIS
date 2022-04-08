@@ -66,6 +66,7 @@
                     <p id="output"><img id="if2" src="" alt="HTML5 Icon" width="1020" height="600"></p>
                     <p id="output"><img id="if3" src="" alt="HTML5 Icon" width="1020" height="600"></p>
                     <p id="output"><img id="if4" src="" alt="HTML5 Icon" width="1020" height="600"></p>
+                    <p id="output"><img id="if5" src="" alt="HTML5 Icon" width="1020" height="600"></p>
                 </div>
                 <div class="loading" id ="loading">Loading&#8230;</div>
             </body>
@@ -120,9 +121,11 @@
                                                                                     document.getElementById("if2").src="/assets/img/"+data.img_urls[1];
                                                                                     document.getElementById("if3").src="/assets/img/"+data.img_urls[2];
                                                                                     document.getElementById("if4").src="/assets/img/"+data.img_urls[3];
+                                                                                    document.getElementById("if5").src="/assets/img/"+data.img_urls[4];
                                                                                     document.getElementById("if2").style.display = "block";
                                                                                     document.getElementById("if3").style.display = "block";
                                                                                     document.getElementById("if4").style.display = "block";
+                                                                                    document.getElementById("if5").style.display = "block";
                                                                                 }
                                                                                 if(data.status == "error")
                                                                                 {
@@ -172,9 +175,10 @@
                         if(dataset=='Nexrad'){
                             document.getElementById("station_block").style.display = "block";
                             document.getElementById("if1").src="/assets/"+"test.png";
-                            document.getElementById("if2").style.display = "block";
-                            document.getElementById("if3").style.display = "block";
-                            document.getElementById("if4").style.display = "block";
+                            document.getElementById("if2").style.display = "none";
+                            document.getElementById("if3").style.display = "none";
+                            document.getElementById("if4").style.display = "none";
+                            document.getElementById("if5").style.display = "none";
                         }
                     }
                 </script>
