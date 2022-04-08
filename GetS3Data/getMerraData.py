@@ -104,6 +104,8 @@ def convert_data(file, year, month):
     COEM = COEM[0,:,:]
     COLS = data.variables['COLS'][:,:,:]
     COLS = COLS[0,:,:]
+    COPD = data.variables['COPD'][:,:,:]
+    COPD = COPD[0,:,:]
     TO3 =  data.variables['TO3'][:,:,:]
     TO3 =  TO3[0,:,:]
     
@@ -125,6 +127,13 @@ def convert_data(file, year, month):
     
     filename = f"{year}_{month}_COLS.csv"
     temp = np.array(COLS)
+    A = np.vstack([lons, temp])
+    csv_file = np.hstack((latsflat, A))
+    np.savetxt(filename, csv_file, delimiter=",")
+    files.append(filename)
+    
+    filename = f"{year}_{month}_COPD.csv"
+    temp = np.array(COPD)
     A = np.vstack([lons, temp])
     csv_file = np.hstack((latsflat, A))
     np.savetxt(filename, csv_file, delimiter=",")
@@ -154,12 +163,14 @@ def plot_data(file, year, month):
     COEM = COEM[0,:,:]
     COLS = data.variables['COLS'][:,:,:]
     COLS = COLS[0,:,:]
+    COPD = data.variables['COPD'][:,:,:]
+    COPD = COPD[0,:,:]
     TO3 =  data.variables['TO3'][:,:,:]
     TO3 =  TO3[0,:,:]
-    d={'COCL':COCL,'COEM':COEM,'COLS':COLS,'TO3':TO3}
-    d1={'COCL':"CO Column Burden",'COEM':"CO Emission",'COLS':"CO Chemical Loss",'TO3':"Total Column Ozone"}
+    d={'COCL':COCL,'COEM':COEM,'COLS':COLS,'COPD':COPD,'TO3':TO3}
+    d1={'COCL':"CO Column Burden",'COEM':"CO Emission",'COLS':"CO Chemical Loss",'COPD':"CO Chemical Production",'TO3':"Total Column Ozone"}
     
-    for i in ['COCL','COEM','COLS','TO3']:
+    for i in ['COCL','COEM','COLS','COPD','TO3']:
         fig = plt.figure(figsize=(16,9))
         ax = plt.axes(projection=ccrs.Robinson())
         ax.set_global()
