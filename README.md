@@ -1,4 +1,4 @@
-### For Assignment 1 checkout [Assignemt 1 production branch](https://github.com/airavata-courses/JARVIS/tree/assignment1-prod)
+### For Assignment 3 checkout [Assignemt 3 dev branch](https://github.com/airavata-courses/JARVIS/tree/assignment3-dev)
 
 # JARVIS
 An intelligent AI driven weather monitoring system
