@@ -13,8 +13,7 @@ deployments := api-gateway-deployment.yml \
 	       meera-deployment.yml \
 	       authserver-deployment.yml \
 	       dbaccess-deployment.yml \
-	       static-server-deployment.yml \
-	       kafka-deployment.yml
+	       static-server-deployment.yml
 
 all:
 	echo "Options: kubernetes, local"
