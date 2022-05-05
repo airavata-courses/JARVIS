@@ -1,6 +1,6 @@
 # JARVIS Assignment 3
 
-## Napkin Diagram
+## Napkin Diagram test
 
 ![Napkin Diagram](https://user-images.githubusercontent.com/22557048/152892846-99e400bf-0cf2-44ba-a407-ce3cb34d833b.png)
 
