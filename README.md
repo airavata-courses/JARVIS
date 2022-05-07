@@ -11,11 +11,11 @@
 
 
 ## User Flow Diagram
+![User flow diagram](https://user-images.githubusercontent.com/22557048/152893438-234bd3c7-8ea7-4c45-9b13-2c7cca853d22.png)
 
-![image](https://user-images.githubusercontent.com/89654540/167268386-bdc0c0e5-935c-4249-999c-bd0639b10c7d.png)
 
 ## NexRad Parameter plot 
-![User flow diagram](https://user-images.githubusercontent.com/22557048/152893438-234bd3c7-8ea7-4c45-9b13-2c7cca853d22.png)
+![image](https://user-images.githubusercontent.com/89654540/167268386-bdc0c0e5-935c-4249-999c-bd0639b10c7d.png)
 
 ## Merra data plot 
 - Ozone level
