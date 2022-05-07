@@ -12,9 +12,16 @@
 
 ## User Flow Diagram
 
+![image](https://user-images.githubusercontent.com/89654540/167268386-bdc0c0e5-935c-4249-999c-bd0639b10c7d.png)
+
+## NexRad Parameter plot 
 ![User flow diagram](https://user-images.githubusercontent.com/22557048/152893438-234bd3c7-8ea7-4c45-9b13-2c7cca853d22.png)
 
-
+## Merra data plot 
+- Ozone level
+![image](https://user-images.githubusercontent.com/89654540/167268396-ec2ad534-1151-4d67-94e9-f6833b450290.png)
+- COPD CO chemical production level
+![image](https://user-images.githubusercontent.com/89654540/167268402-0969e5c2-f709-4720-9f08-9eac738c37ed.png)
 
 ## Requirements
 - Hard requirement: Linux system
