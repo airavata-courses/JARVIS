@@ -7,7 +7,7 @@
 
 ## Design Diagram
 
-![Design Diagram](![image](https://user-images.githubusercontent.com/89654540/167268136-b6cdc99c-d768-465d-8523-66ba9e5efffe.png))
+![Design Diagram](https://user-images.githubusercontent.com/89654540/167268136-b6cdc99c-d768-465d-8523-66ba9e5efffe.png)
 
 
 ## User Flow Diagram
