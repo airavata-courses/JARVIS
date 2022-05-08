@@ -23,6 +23,9 @@
 - COPD CO chemical production level
 ![image](https://user-images.githubusercontent.com/89654540/167268402-0969e5c2-f709-4720-9f08-9eac738c37ed.png)
 
+## Cloud Architecture
+![Capture](https://user-images.githubusercontent.com/89654540/167276080-0b530821-9e2b-4a0e-82ce-725b1aa78df5.PNG)
+
 ## Requirements
 - Hard requirement: Linux system
 - If there is any error in 'RUN apt install -y mongodb-org' during make, go to a1-authserver/Dockerfile. line 10. if [arch=amd64] change it to [arch=arm64] else if [arch=arm64], change it to [arch=amd64].
