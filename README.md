@@ -26,23 +26,11 @@
 ## Cloud Architecture
 ![Capture](https://user-images.githubusercontent.com/89654540/167276080-0b530821-9e2b-4a0e-82ce-725b1aa78df5.PNG)
 
-## Requirements
-- Hard requirement: Linux system
-- If there is any error in 'RUN apt install -y mongodb-org' during make, go to a1-authserver/Dockerfile. line 10. if [arch=amd64] change it to [arch=arm64] else if [arch=arm64], change it to [arch=amd64].
-- Docker needs to be installed in the host system
-- The entire project runs on a single machine
-- requires ``make`` to build
-
 ## Build
-Just run make
-> make local
+Head to a web browser and go to http://149.165.152.38:30000/ to access the application
 
-Head to a web browser and go to http://localhost to access the application
-
-To cleanup
-> make cleanup_local
 ## Functionality
-- Open Web browser and launch http://localhost
+- Open Web browser and launch http://149.165.152.38:30000/
 - Click on Sign in button, you'll be navigated to login page to enter your credentials
 - First time user should register by clicking on + icon, enter username, password and click on next button, you'll be logged in and navigated to home page.
 - If you are already registered you can enter your credentials and login by clicking on go button.
